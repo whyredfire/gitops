@@ -6,7 +6,7 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: git@gitea-ssh.whyredfire.tech:whyredfire/gitops
+    repoURL: https://gitea.whyredfire.tech/whyredfire/gitops
     targetRevision: main
     path: manifests/scriptscribe
   destination:

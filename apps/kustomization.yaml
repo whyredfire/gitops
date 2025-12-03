@@ -4,3 +4,4 @@ kind: Kustomization
 resources:
   - nginx-app.yaml
   - scriptscribe.yaml
+  - sealed-secrets.yaml

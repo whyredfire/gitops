@@ -6,9 +6,9 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://gitea.whyredfire.tech/whyredfire/gitops
+    repoURL: https://github.com/whyredfire/scriptscribe
     targetRevision: main
-    path: manifests/scriptscribe
+    path: k8s
   destination:
     server: https://kubernetes.default.svc
     namespace: scriptscribe

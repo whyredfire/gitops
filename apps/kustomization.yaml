@@ -5,3 +5,4 @@ resources:
   - nginx-app.yaml
   - scriptscribe.yaml
   - sealed-secrets.yaml
+  - cert-manager.yaml

@@ -6,3 +6,4 @@ resources:
   - scriptscribe.yaml
   - sealed-secrets.yaml
   - cert-manager.yaml
+  - telegram-autoregexbot.yaml

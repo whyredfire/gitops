@@ -3,4 +3,3 @@ kind: Kustomization
 
 resources:
   - root-app.yaml
-  - ssh-known-hosts-cm.yaml

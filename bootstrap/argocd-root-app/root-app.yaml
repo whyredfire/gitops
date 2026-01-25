@@ -1,17 +1,20 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: cert-manager
+  name: root-app
   namespace: argocd
 spec:
   project: default
   source:
-    repoURL: https://gitea.whyredfire.tech/whyredfire/gitops
+    repoURL: https://gitlab.com/whyredfire/gitops
     targetRevision: main
-    path: add-ons/cert-manager
+    path: applications
   destination:
     server: https://kubernetes.default.svc
+    namespace: argocd
   syncPolicy:
     automated:
       prune: true
       selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

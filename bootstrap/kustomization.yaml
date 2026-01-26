@@ -6,3 +6,9 @@ namespace: argocd
 resources:
   - https://raw.githubusercontent.com/argoproj/argo-cd/v3.2.6/manifests/install.yaml
   - argocd-root-app
+
+patches:
+  - target:
+      kind: Service
+      name: argocd-server
+    path: argocd-server-nodeport-patch.yaml

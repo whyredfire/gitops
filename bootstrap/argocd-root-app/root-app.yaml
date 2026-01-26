@@ -6,7 +6,7 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://gitlab.com/whyredfire/gitops
+    repoURL: https://gitlab.com/whyredfire/gitops.git
     targetRevision: main
     path: applications
   destination:

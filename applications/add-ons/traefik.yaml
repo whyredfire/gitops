@@ -1,0 +1,37 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: traefik
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://traefik.github.io/charts
+    chart: traefik
+    targetRevision: v39.0.2
+    helm:
+      values: |
+        providers:
+          kubernetesGateway:
+            enabled: true
+          kubernetesIngress:
+            enabled: false
+        service:
+          type: ClusterIP
+          externalIPs:
+            - 192.168.2.220
+        gateway:
+          listeners:
+            web:
+              namespacePolicy:
+                from: All
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: traefik
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - ServerSideApply=true

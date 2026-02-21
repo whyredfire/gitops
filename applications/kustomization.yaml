@@ -8,3 +8,4 @@ resources:
   # services
   - services/app-autoregexbot.yaml
   - services/app-betterslcm.yaml
+  - services/app-scriptscribe.yaml

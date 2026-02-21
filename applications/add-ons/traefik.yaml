@@ -25,16 +25,25 @@ spec:
             web:
               namespacePolicy:
                 from: All
-            websecure:
+            websecure-dev:
               port: 8443
               protocol: HTTPS
               mode: Terminate
+              hostname: "*.whyredfire.dev"
               namespacePolicy:
                 from: All
               certificateRefs:
                 - kind: Secret
                   name: wildcard-whyredfire-dev
                   group: ""
+            websecure-tech:
+              port: 8443
+              protocol: HTTPS
+              mode: Terminate
+              hostname: "*.whyredfire.tech"
+              namespacePolicy:
+                from: All
+              certificateRefs:
                 - kind: Secret
                   name: wildcard-whyredfire-tech
                   group: ""

@@ -4,5 +4,6 @@ kind: Kustomization
 resources:
   # add-ons
   - add-ons/traefik.yaml
+  - add-ons/cert-manager.yaml
   # services
   - services/app-autoregexbot.yaml

@@ -5,7 +5,9 @@ resources:
   # add-ons
   - add-ons/traefik.yaml
   - add-ons/cert-manager.yaml
+
   # services
   - services/app-autoregexbot.yaml
   - services/app-betterslcm.yaml
+  - services/app-jellyfin.yaml
   - services/app-scriptscribe.yaml

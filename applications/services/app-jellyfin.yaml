@@ -24,7 +24,7 @@ spec:
               enabled: true
               type: hostPath
               hostPath: /srv/media
-    - repoURL: https://gitea.whyredfire.tech/whyredfire/gitops.git
+    - repoURL: https://gitea.whyredfire.dev/whyredfire/gitops.git
       targetRevision: main
       path: services/jellyfin
   destination:

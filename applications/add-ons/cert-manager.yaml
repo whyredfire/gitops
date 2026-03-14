@@ -18,7 +18,7 @@ spec:
             kind: ControllerConfiguration
             featureGates:
               ExperimentalGatewayAPISupport: true
-    - repoURL: https://gitea.whyredfire.tech/whyredfire/gitops.git
+    - repoURL: https://gitea.whyredfire.dev/whyredfire/gitops.git
       targetRevision: main
       path: add-ons/cert-manager
   destination:

@@ -8,7 +8,7 @@ spec:
     - name: traefik-gateway
       namespace: traefik
       kind: Gateway
-      sectionName: websecure-dev
+      sectionName: websecure
   hostnames:
     - jellyfin-local.whyredfire.dev
   rules:

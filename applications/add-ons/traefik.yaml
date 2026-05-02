@@ -25,7 +25,7 @@ spec:
             web:
               namespacePolicy:
                 from: All
-            websecure-dev:
+            websecure:
               port: 8443
               protocol: HTTPS
               mode: Terminate
@@ -35,17 +35,6 @@ spec:
               certificateRefs:
                 - kind: Secret
                   name: wildcard-whyredfire-dev
-                  group: ""
-            websecure-tech:
-              port: 8443
-              protocol: HTTPS
-              mode: Terminate
-              hostname: "*.whyredfire.tech"
-              namespacePolicy:
-                from: All
-              certificateRefs:
-                - kind: Secret
-                  name: wildcard-whyredfire-tech
                   group: ""
   destination:
     server: https://kubernetes.default.svc

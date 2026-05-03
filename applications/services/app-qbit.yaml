@@ -1,0 +1,20 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: qbit
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://gitea.whyredfire.dev/whyredfire/gitops-private.git
+    targetRevision: main
+    path: qbit
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: qbit
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

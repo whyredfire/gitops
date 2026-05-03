@@ -8,7 +8,9 @@ resources:
   - add-ons/sealed-secrets.yaml
 
   # services
+  - services/app-argocd-repos.yaml
   - services/app-autoregexbot.yaml
   - services/app-betterslcm.yaml
   - services/app-jellyfin.yaml
   - services/app-scriptscribe.yaml
+  - services/app-qbit.yaml

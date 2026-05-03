@@ -1,0 +1,20 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: argocd-repos
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://gitea.whyredfire.dev/whyredfire/gitops.git
+    targetRevision: main
+    path: add-ons/argocd-repos
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: argocd
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

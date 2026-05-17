@@ -6,6 +6,7 @@ resources:
   - add-ons/traefik.yaml
   - add-ons/cert-manager.yaml
   - add-ons/sealed-secrets.yaml
+  - add-ons/cnpg.yaml
 
   # services
   - services/app-argocd-repos.yaml

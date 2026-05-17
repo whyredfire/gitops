@@ -13,5 +13,6 @@ resources:
   - services/app-autoregexbot.yaml
   - services/app-betterslcm.yaml
   - services/app-jellyfin.yaml
+  - services/app-legislative-summarization.yaml
   - services/app-scriptscribe.yaml
   - services/app-qbit.yaml

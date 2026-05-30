@@ -26,7 +26,7 @@ spec:
               hostPath: /srv/media
     - repoURL: https://gitea.whyredfire.dev/whyredfire/gitops.git
       targetRevision: main
-      path: services/jellyfin
+      path: extras/services/jellyfin
   destination:
     server: https://kubernetes.default.svc
     namespace: jellyfin

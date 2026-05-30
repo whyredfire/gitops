@@ -20,11 +20,10 @@ spec:
               ExperimentalGatewayAPISupport: true
     - repoURL: https://gitea.whyredfire.dev/whyredfire/gitops.git
       targetRevision: main
-      path: add-ons/cert-manager
+      path: extras/add-ons/cert-manager
   destination:
     server: https://kubernetes.default.svc
     namespace: cert-manager
-
   syncPolicy:
     automated:
       prune: true

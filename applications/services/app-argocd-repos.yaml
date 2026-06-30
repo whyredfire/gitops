@@ -8,7 +8,7 @@ spec:
   source:
     repoURL: https://gitea.whyredfire.dev/whyredfire/gitops.git
     targetRevision: main
-    path: add-ons/argocd-repos
+    path: extras/add-ons/argocd-repos
   destination:
     server: https://kubernetes.default.svc
     namespace: argocd

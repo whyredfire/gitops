@@ -13,3 +13,7 @@ patches:
       kind: ConfigMap
       name: argocd-cm
     path: argocd-cm-application-health-patch.yaml
+  - target:
+      kind: ConfigMap
+      name: argocd-cmd-params-cm
+    path: argocd-cmd-params-cm-server-side-diff-patch.yaml

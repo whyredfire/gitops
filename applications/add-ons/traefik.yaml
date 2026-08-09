@@ -10,7 +10,7 @@ spec:
   sources:
     - repoURL: https://traefik.github.io/charts
       chart: traefik
-      targetRevision: v39.0.2
+      targetRevision: 41.2.0
       helm:
         values: |
           providers:
@@ -19,9 +19,10 @@ spec:
             kubernetesIngress:
               enabled: false
           service:
-            type: ClusterIP
-            externalIPs:
-              - 192.168.2.5
+            spec:
+              type: ClusterIP
+              externalIPs:
+                - 192.168.2.5
           gateway:
             listeners:
               web:

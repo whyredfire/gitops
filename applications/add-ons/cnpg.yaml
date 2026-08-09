@@ -10,7 +10,7 @@ spec:
   sources:
     - repoURL: https://cloudnative-pg.github.io/charts
       chart: cloudnative-pg
-      targetRevision: 0.28.2
+      targetRevision: 0.29.0
       helm:
         values: |
           replicaCount: 1
@@ -18,7 +18,7 @@ spec:
             clusterWide: true
     - repoURL: https://cloudnative-pg.github.io/charts
       chart: cluster
-      targetRevision: 0.6.1
+      targetRevision: 0.8.1
       helm:
         values: |
           cluster:

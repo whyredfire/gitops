@@ -1,16 +1,17 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: cert-manager
-  namespace: argocd
   annotations:
     argocd.argoproj.io/sync-wave: "1"
+  name: cert-manager
+  namespace: argocd
 spec:
+  destination:
+    namespace: cert-manager
+    server: https://kubernetes.default.svc
   project: default
   sources:
-    - repoURL: https://charts.jetstack.io
-      chart: cert-manager
-      targetRevision: v1.21.1
+    - chart: cert-manager
       helm:
         values: |
           crds:
@@ -20,12 +21,11 @@ spec:
             kind: ControllerConfiguration
             featureGates:
               ExperimentalGatewayAPISupport: true
-    - repoURL: https://gitea.whyredfire.dev/whyredfire/gitops.git
+      repoURL: https://charts.jetstack.io
+      targetRevision: v1.21.1
+    - path: infra/cert-manager
+      repoURL: https://gitea.whyredfire.dev/whyredfire/gitops.git
       targetRevision: main
-      path: infra/cert-manager
-  destination:
-    server: https://kubernetes.default.svc
-    namespace: cert-manager
   syncPolicy:
     automated:
       prune: true

@@ -1,24 +1,12 @@
 apiVersion: anubis.techaro.dev/v1alpha1
 kind: AnubisProxy
 metadata:
-  name: anubis
-  namespace: stirling-pdf
   annotations:
     argocd.argoproj.io/sync-wave: "1"
+  name: anubis
+  namespace: stirling-pdf
 spec:
-  target:
-    service:
-      name: stirling-pdf
-      port: 8080
   anubis:
-    image:
-      tag: v1.26.2
-    keys:
-      existingSecret: anubis-key
-    persistence:
-      enabled: false
-    metrics:
-      enabled: false
     envExtra:
       - name: DIFFICULTY
         value: "4"
@@ -42,6 +30,14 @@ spec:
         value: "true"
       - name: SLOG_LEVEL
         value: INFO
+    image:
+      tag: v1.26.2
+    keys:
+      existingSecret: anubis-key
+    metrics:
+      enabled: false
+    persistence:
+      enabled: false
     resources:
       limits:
         memory: 128Mi
@@ -50,3 +46,7 @@ spec:
         memory: 64Mi
   networkPolicy:
     enabled: true
+  target:
+    service:
+      name: stirling-pdf
+      port: 8080

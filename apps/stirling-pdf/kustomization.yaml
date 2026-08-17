@@ -1,5 +1,6 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
-  - add-ons
-  - services
+  - anubis-key-sealedsecret.yaml
+  - anubis-proxy.yaml
+  - httproute.yaml

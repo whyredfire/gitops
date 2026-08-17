@@ -1,16 +1,17 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: traefik
-  namespace: argocd
   annotations:
     argocd.argoproj.io/sync-wave: "2"
+  name: traefik
+  namespace: argocd
 spec:
+  destination:
+    namespace: traefik
+    server: https://kubernetes.default.svc
   project: default
   sources:
-    - repoURL: https://traefik.github.io/charts
-      chart: traefik
-      targetRevision: 41.2.0
+    - chart: traefik
       helm:
         values: |
           providers:
@@ -39,12 +40,11 @@ spec:
                   - kind: Secret
                     name: wildcard-whyredfire-dev
                     group: ""
-    - repoURL: https://gitea.whyredfire.dev/whyredfire/gitops.git
+      repoURL: https://traefik.github.io/charts
+      targetRevision: 41.2.0
+    - path: infra/traefik
+      repoURL: https://gitea.whyredfire.dev/whyredfire/gitops.git
       targetRevision: main
-      path: infra/traefik
-  destination:
-    server: https://kubernetes.default.svc
-    namespace: traefik
   syncPolicy:
     automated:
       prune: true

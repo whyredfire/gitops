@@ -1,16 +1,17 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: stirling-pdf
   annotations:
     argocd.argoproj.io/sync-wave: "3"
+  name: stirling-pdf
   namespace: argocd
 spec:
+  destination:
+    namespace: stirling-pdf
+    server: https://kubernetes.default.svc
   project: default
   sources:
-    - repoURL: https://docs.stirlingpdf.com/Stirling-PDF-chart
-      chart: stirling-pdf-chart
-      targetRevision: "3.1.0"
+    - chart: stirling-pdf-chart
       helm:
         values: |
           fullnameOverride: stirling-pdf
@@ -26,12 +27,11 @@ spec:
               initialDelaySeconds: 90
             readiness:
               initialDelaySeconds: 60
-    - repoURL: https://gitea.whyredfire.dev/whyredfire/gitops.git
+      repoURL: https://docs.stirlingpdf.com/Stirling-PDF-chart
+      targetRevision: 3.1.0
+    - path: apps/stirling-pdf
+      repoURL: https://gitea.whyredfire.dev/whyredfire/gitops.git
       targetRevision: main
-      path: apps/stirling-pdf
-  destination:
-    server: https://kubernetes.default.svc
-    namespace: stirling-pdf
   syncPolicy:
     automated:
       prune: true

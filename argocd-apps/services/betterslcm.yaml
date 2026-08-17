@@ -1,19 +1,19 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: betterslcm
   annotations:
     argocd.argoproj.io/sync-wave: "3"
+  name: betterslcm
   namespace: argocd
 spec:
+  destination:
+    namespace: betterslcm
+    server: https://kubernetes.default.svc
   project: default
   source:
+    path: k8s
     repoURL: https://github.com/DK10WS/SLCM_APP.git
     targetRevision: web
-    path: k8s
-  destination:
-    server: https://kubernetes.default.svc
-    namespace: betterslcm
   syncPolicy:
     automated:
       prune: true

@@ -1,0 +1,41 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# Normalise staged manifests to their kubectl kustomize output, so what is
+# committed is exactly what Argo CD renders. Requires kubectl and yq.
+
+identity='[.apiVersion, .kind, .metadata.name // ""] | join("|")'
+
+git diff --cached --name-only --diff-filter=ACM -- '*.yaml' |
+  while IFS= read -r file; do
+    dir=$(dirname "$file")
+    name=$(basename "$file")
+    [ "$name" = kustomization.yaml ] && continue
+
+    # only normalise files the sibling kustomization lists as a resource, so
+    # patches and components are never replaced with build output
+    yq -r '.resources[]? // ""' "$dir/kustomization.yaml" 2>/dev/null |
+      grep -Fxq "$name" || continue
+
+    rendered=$(mktemp)
+    kubectl kustomize "$dir" |
+      yq eval-all "select(($identity) == \"$(yq eval-all "$identity" "$file" | head -1)\")" - >"$rendered"
+
+    if [ -s "$rendered" ] && ! diff -q "$file" "$rendered" >/dev/null; then
+      cat "$rendered" >"$file"
+      git add "$file"
+      echo "normalised $file"
+    fi
+    rm -f "$rendered"
+
+    # normalising may have reverted the change entirely
+    if git diff --cached --quiet -- "$file"; then
+      git reset -q HEAD -- "$file"
+    fi
+  done
+
+# nothing left staged — prevent an empty commit
+if git diff --cached --quiet; then
+  echo "pre-commit: no meaningful changes, aborting commit"
+  exit 1
+fi

@@ -1,16 +1,17 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: seaweedfs
   annotations:
     argocd.argoproj.io/sync-wave: "3"
+  name: seaweedfs
   namespace: argocd
 spec:
+  destination:
+    namespace: seaweedfs
+    server: https://kubernetes.default.svc
   project: default
   sources:
-    - repoURL: https://seaweedfs.github.io/seaweedfs/helm
-      chart: seaweedfs
-      targetRevision: 4.33.0
+    - chart: seaweedfs
       helm:
         values: |
           allInOne:
@@ -21,12 +22,11 @@ spec:
             enabled: false
           filer:
             enabled: false
-    - repoURL: https://gitea.whyredfire.dev/whyredfire/gitops.git
+      repoURL: https://seaweedfs.github.io/seaweedfs/helm
+      targetRevision: 4.33.0
+    - path: apps/seaweedfs
+      repoURL: https://gitea.whyredfire.dev/whyredfire/gitops.git
       targetRevision: main
-      path: apps/seaweedfs
-  destination:
-    server: https://kubernetes.default.svc
-    namespace: seaweedfs
   syncPolicy:
     automated:
       prune: true

@@ -1,19 +1,19 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: qbit
   annotations:
     argocd.argoproj.io/sync-wave: "3"
+  name: qbit
   namespace: argocd
 spec:
+  destination:
+    namespace: qbit
+    server: https://kubernetes.default.svc
   project: default
   source:
+    path: qbit
     repoURL: https://gitea.whyredfire.dev/whyredfire/gitops-private.git
     targetRevision: main
-    path: qbit
-  destination:
-    server: https://kubernetes.default.svc
-    namespace: qbit
   syncPolicy:
     automated:
       prune: true

@@ -1,19 +1,19 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: scriptscribe
   annotations:
     argocd.argoproj.io/sync-wave: "3"
+  name: scriptscribe
   namespace: argocd
 spec:
+  destination:
+    namespace: scriptscribe
+    server: https://kubernetes.default.svc
   project: default
   source:
+    path: k8s
     repoURL: https://github.com/whyredfire/scriptscribe
     targetRevision: main
-    path: k8s
-  destination:
-    server: https://kubernetes.default.svc
-    namespace: scriptscribe
   syncPolicy:
     automated:
       prune: true

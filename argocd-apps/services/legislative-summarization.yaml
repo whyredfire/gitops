@@ -1,19 +1,19 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: legislative-summarization
   annotations:
     argocd.argoproj.io/sync-wave: "3"
+  name: legislative-summarization
   namespace: argocd
 spec:
+  destination:
+    namespace: legislative-summarization
+    server: https://kubernetes.default.svc
   project: default
   source:
+    path: k8s
     repoURL: https://github.com/whyredfire/legislative-summarization
     targetRevision: main
-    path: k8s
-  destination:
-    server: https://kubernetes.default.svc
-    namespace: legislative-summarization
   syncPolicy:
     automated:
       prune: true

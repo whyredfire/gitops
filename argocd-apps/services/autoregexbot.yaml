@@ -1,19 +1,19 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: telegram-autoregexbot
   annotations:
     argocd.argoproj.io/sync-wave: "3"
+  name: telegram-autoregexbot
   namespace: argocd
 spec:
+  destination:
+    namespace: telegram-bot
+    server: https://kubernetes.default.svc
   project: default
   source:
+    path: k8s
     repoURL: https://github.com/santarl/telegram-autoregexbot
     targetRevision: main
-    path: k8s
-  destination:
-    server: https://kubernetes.default.svc
-    namespace: telegram-bot
   syncPolicy:
     automated:
       prune: true

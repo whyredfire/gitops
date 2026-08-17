@@ -1,0 +1,26 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: anubis-operator
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/eznix86/anubis-kubernetes-operator.git
+    targetRevision: v0.4.4
+    path: config/default
+    kustomize:
+      images:
+        - public-registry.brunobernard.dev/techarohq/anubis-operator=ghcr.io/eznix86/anubis-kubernetes-operator:0.4.4
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: anubis-operator-system
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - ServerSideApply=true

@@ -1,0 +1,50 @@
+apiVersion: anubis.techaro.dev/v1alpha1
+kind: AnubisProxy
+metadata:
+  name: anubis
+  namespace: stirling-pdf
+spec:
+  target:
+    service:
+      name: stirling-pdf
+      port: 8080
+  anubis:
+    image:
+      tag: v1.26.2
+    keys:
+      existingSecret: anubis-key
+    persistence:
+      enabled: false
+    metrics:
+      enabled: false
+    envExtra:
+      - name: DIFFICULTY
+        value: "4"
+      - name: SERVE_ROBOTS_TXT
+        value: "true"
+      - name: OG_PASSTHROUGH
+        value: "true"
+      - name: OG_EXPIRY_TIME
+        value: 24h
+      - name: COOKIE_DOMAIN
+        value: pdf.whyredfire.dev
+      - name: REDIRECT_DOMAINS
+        value: pdf.whyredfire.dev
+      - name: COOKIE_PARTITIONED
+        value: "true"
+      - name: COOKIE_HTTP_ONLY
+        value: "true"
+      - name: COOKIE_SAME_SITE
+        value: Lax
+      - name: DIFFICULTY_IN_JWT
+        value: "true"
+      - name: SLOG_LEVEL
+        value: INFO
+    resources:
+      limits:
+        memory: 128Mi
+      requests:
+        cpu: 50m
+        memory: 64Mi
+  networkPolicy:
+    enabled: true

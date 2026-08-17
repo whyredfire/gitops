@@ -19,6 +19,6 @@ spec:
             type: PathPrefix
             value: /
       backendRefs:
-        - name: stirling-pdf
-          port: 8080
+        - name: anubis
+          port: 80
 

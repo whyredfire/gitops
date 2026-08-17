@@ -5,6 +5,7 @@ resources:
   - add-ons/gateway-api.yaml
   - add-ons/traefik.yaml
   - add-ons/cert-manager.yaml
+  - add-ons/anubis-operator.yaml
   - add-ons/sealed-secrets.yaml
   - add-ons/cnpg.yaml
   # services

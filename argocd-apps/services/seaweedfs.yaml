@@ -23,7 +23,7 @@ spec:
             enabled: false
     - repoURL: https://gitea.whyredfire.dev/whyredfire/gitops.git
       targetRevision: main
-      path: extras/services/seaweedfs
+      path: apps/seaweedfs
   destination:
     server: https://kubernetes.default.svc
     namespace: seaweedfs

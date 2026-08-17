@@ -41,7 +41,7 @@ spec:
                     group: ""
     - repoURL: https://gitea.whyredfire.dev/whyredfire/gitops.git
       targetRevision: main
-      path: extras/add-ons/traefik
+      path: infra/traefik
   destination:
     server: https://kubernetes.default.svc
     namespace: traefik

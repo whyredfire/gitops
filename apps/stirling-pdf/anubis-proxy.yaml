@@ -3,6 +3,8 @@ kind: AnubisProxy
 metadata:
   name: anubis
   namespace: stirling-pdf
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
 spec:
   target:
     service:

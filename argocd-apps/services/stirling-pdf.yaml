@@ -28,7 +28,7 @@ spec:
               initialDelaySeconds: 60
     - repoURL: https://gitea.whyredfire.dev/whyredfire/gitops.git
       targetRevision: main
-      path: extras/services/stirling-pdf
+      path: apps/stirling-pdf
   destination:
     server: https://kubernetes.default.svc
     namespace: stirling-pdf

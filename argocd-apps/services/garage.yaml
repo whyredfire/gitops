@@ -1,0 +1,84 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  annotations:
+    argocd.argoproj.io/sync-wave: "3"
+  name: garage
+  namespace: argocd
+spec:
+  destination:
+    namespace: garage
+    server: https://kubernetes.default.svc
+  project: default
+  sources:
+    - repoURL: https://git.deuxfleurs.fr/Deuxfleurs/garage.git
+      targetRevision: v2.4.1
+      path: script/helm/garage
+      helm:
+        values: |
+          garage:
+            singleNode: true
+            existingRpcSecret: garage-secrets
+            noClusterRole: true
+            # No discovery or website listener is needed for standalone S3.
+            garageTomlString: |
+              metadata_dir = "/mnt/meta"
+              data_dir = "/mnt/data"
+              db_engine = "sqlite"
+              metadata_fsync = true
+              data_fsync = true
+              replication_factor = 1
+              rpc_bind_addr = "127.0.0.1:3901"
+              rpc_public_addr = "127.0.0.1:3901"
+              rpc_secret = "__RPC_SECRET_REPLACE__"
+
+              [s3_api]
+              s3_region = "garage"
+              api_bind_addr = "0.0.0.0:3900"
+
+              [admin]
+              api_bind_addr = "0.0.0.0:3903"
+              metrics_require_token = true
+          image:
+            repository: dxflrs/garage
+          initImage:
+            tag: "1.37.0"
+          persistence:
+            meta:
+              storageClass: local-path
+              size: 1Gi
+            data:
+              storageClass: local-path
+              size: 9Gi
+          podSecurityContext:
+            seccompProfile:
+              type: RuntimeDefault
+          securityContext:
+            allowPrivilegeEscalation: false
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: admin
+            timeoutSeconds: 3
+          livenessProbe:
+            tcpSocket:
+              port: s3-api
+            initialDelaySeconds: 60
+            periodSeconds: 20
+            timeoutSeconds: 3
+          resources:
+            requests:
+              cpu: 100m
+              memory: 256Mi
+            limits:
+              memory: 1Gi
+    - path: apps/garage
+      repoURL: https://gitea.whyredfire.dev/whyredfire/gitops.git
+      targetRevision: main
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - ServerSideApply=true

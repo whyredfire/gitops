@@ -3,9 +3,9 @@ kind: Kustomization
 resources:
   - autoregexbot.yaml
   - betterslcm.yaml
+  - garage.yaml
   - jellyfin.yaml
   - legislative-summarization.yaml
   - qbit.yaml
   - scriptscribe.yaml
-  - seaweedfs.yaml
   - stirling-pdf.yaml

@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: garage-admin
+  namespace: garage
+spec:
+  ports:
+    - name: admin
+      port: 3903
+      targetPort: admin
+  selector:
+    app.kubernetes.io/instance: garage
+    app.kubernetes.io/name: garage

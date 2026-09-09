@@ -1,0 +1,46 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  annotations:
+    argocd.argoproj.io/sync-wave: "4"
+  name: garage-ui
+  namespace: argocd
+spec:
+  destination:
+    namespace: garage
+    server: https://kubernetes.default.svc
+  project: default
+  sources:
+    - chart: garage-ui
+      repoURL: https://helm.noste.dev/
+      targetRevision: 0.12.1
+      helm:
+        values: |
+          config:
+            server:
+              domain: garage.whyredfire.dev
+              protocol: https
+              root_url: https://garage.whyredfire.dev
+            garage:
+              admin_endpoint: http://garage-admin:3903
+              existingSecret:
+                name: garage-ui-secrets
+            auth:
+              admin:
+                enabled: true
+                existingSecret:
+                  name: garage-ui-secrets
+              jwt_private_key_secret:
+                name: garage-ui-secrets
+            cors:
+              enabled: false
+    - path: apps/garage-ui
+      repoURL: https://gitea.whyredfire.dev/whyredfire/gitops.git
+      targetRevision: main
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - ServerSideApply=true

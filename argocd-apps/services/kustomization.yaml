@@ -4,6 +4,7 @@ resources:
   - autoregexbot.yaml
   - betterslcm.yaml
   - garage.yaml
+  - garage-ui.yaml
   - jellyfin.yaml
   - legislative-summarization.yaml
   - qbit.yaml

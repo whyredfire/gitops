@@ -10,4 +10,3 @@ resources:
   - legislative-summarization.yaml
   - qbit.yaml
   - scriptscribe.yaml
-  - stirling-pdf.yaml

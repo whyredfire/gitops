@@ -1,0 +1,22 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  annotations:
+    argocd.argoproj.io/sync-wave: "3"
+  name: bentopdf
+  namespace: argocd
+spec:
+  destination:
+    namespace: bentopdf
+    server: https://kubernetes.default.svc
+  project: default
+  source:
+    path: apps/bentopdf
+    repoURL: https://gitea.whyredfire.dev/whyredfire/gitops.git
+    targetRevision: main
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

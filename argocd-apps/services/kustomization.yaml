@@ -9,4 +9,5 @@ resources:
   - jellyfin.yaml
   - legislative-summarization.yaml
   - qbit.yaml
+  - rustbin.yaml
   - scriptscribe.yaml

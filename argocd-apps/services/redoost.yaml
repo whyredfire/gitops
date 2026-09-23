@@ -1,0 +1,56 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  annotations:
+    argocd.argoproj.io/sync-wave: "3"
+  name: redoost
+  namespace: argocd
+spec:
+  destination:
+    namespace: redoost
+    server: https://kubernetes.default.svc
+  project: default
+  sources:
+    - repoURL: https://github.com/whyredfire/redoost.git
+      targetRevision: main
+      path: chart
+      helm:
+        values: |
+          appOrigin: https://redoost.whyredfire.dev
+          sitesOrigin: https://whyredfire.dpdns.org
+          httpRoute:
+            annotations:
+              argocd.argoproj.io/sync-wave: "2"
+            app:
+              parentRefs:
+                - kind: Gateway
+                  name: traefik-gateway
+                  namespace: traefik
+                  sectionName: websecure
+            sites:
+              parentRefs:
+                - kind: Gateway
+                  name: traefik-gateway
+                  namespace: traefik
+                  sectionName: websecure-dpdns
+          s3:
+            endpoint: http://garage.garage.svc.cluster.local:3900
+            publicEndpoint: https://s3.whyredfire.dev
+            websiteUpstream: garage.garage.svc.cluster.local:3902
+            bucket: redoost-sites
+            existingSecret: redoost-s3
+          api:
+            image:
+              tag: sha-0e2e897
+          frontend:
+            image:
+              tag: sha-0e2e897
+    - path: apps/redoost
+      repoURL: https://gitea.whyredfire.dev/whyredfire/gitops.git
+      targetRevision: main
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

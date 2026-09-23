@@ -2,3 +2,6 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
   - sealed-secret.yaml
+  - anubis-key-sealedsecret.yaml
+  - anubis-proxy-api.yaml
+  - anubis-proxy-frontend.yaml

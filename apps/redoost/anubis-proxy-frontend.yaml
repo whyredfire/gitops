@@ -1,0 +1,44 @@
+apiVersion: anubis.techaro.dev/v1alpha1
+kind: AnubisProxy
+metadata:
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
+  name: anubis-frontend
+  namespace: redoost
+spec:
+  anubis:
+    envExtra:
+      - name: DIFFICULTY
+        value: "5"
+      - name: SERVE_ROBOTS_TXT
+        value: "true"
+      - name: COOKIE_DOMAIN
+        value: redoost.whyredfire.dev
+      - name: REDIRECT_DOMAINS
+        value: redoost.whyredfire.dev
+      - name: COOKIE_PARTITIONED
+        value: "true"
+      - name: COOKIE_HTTP_ONLY
+        value: "true"
+      - name: COOKIE_SAME_SITE
+        value: Lax
+      - name: DIFFICULTY_IN_JWT
+        value: "true"
+    image:
+      tag: v1.26.2
+    keys:
+      existingSecret: anubis-key
+    metrics:
+      enabled: false
+    persistence:
+      enabled: false
+    resources:
+      limits:
+        memory: 128Mi
+      requests:
+        cpu: 50m
+        memory: 64Mi
+  target:
+    service:
+      name: redoost-frontend
+      port: 8080

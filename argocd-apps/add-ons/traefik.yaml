@@ -40,6 +40,17 @@ spec:
                   - kind: Secret
                     name: wildcard-whyredfire-dev
                     group: ""
+              websecure-dpdns:
+                port: 8443
+                protocol: HTTPS
+                mode: Terminate
+                hostname: "*.whyredfire.dpdns.org"
+                namespacePolicy:
+                  from: All
+                certificateRefs:
+                  - kind: Secret
+                    name: wildcard-whyredfire-dpdns-org
+                    group: ""
       repoURL: https://traefik.github.io/charts
       targetRevision: 41.2.0
     - path: infra/traefik

@@ -24,6 +24,8 @@ spec:
         value: Lax
       - name: DIFFICULTY_IN_JWT
         value: "true"
+      - name: OG_PASSTHROUGH
+        value: "true"
     image:
       tag: v1.26.2
     keys:

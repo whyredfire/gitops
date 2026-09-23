@@ -45,12 +45,6 @@ spec:
             websiteUpstream: garage.garage.svc.cluster.local:3902
             bucket: redoost-sites
             existingSecret: redoost-s3
-          api:
-            image:
-              tag: sha-0e2e897
-          frontend:
-            image:
-              tag: sha-0e2e897
     - path: apps/redoost
       repoURL: https://gitea.whyredfire.dev/whyredfire/gitops.git
       targetRevision: main

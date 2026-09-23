@@ -1,5 +1,6 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
+  - httproute-s3.yaml
   - sealed-secret.yaml
   - service-admin.yaml

@@ -4,18 +4,11 @@ metadata:
   name: authentik-blueprints
   namespace: authentik
 data:
-  # Google is the only way in: its source has no enrollment flow, so a Google
-  # account can only log in when a user with the same email already exists.
   google-login.yaml: |
     version: 1
     metadata:
       name: Google login
     entries:
-      - model: authentik_blueprints.metaapplyblueprint
-        attrs:
-          identifiers:
-            path: default/flow-default-authentication-flow.yaml
-          required: true
       - model: authentik_blueprints.metaapplyblueprint
         attrs:
           identifiers:
@@ -48,8 +41,29 @@ data:
           provider_type: google
           user_matching_mode: email_link
       - model: authentik_stages_identification.identificationstage
+        id: google-identification
         identifiers:
-          name: default-authentication-identification
+          name: google-identification
         attrs:
           sources:
             - !KeyOf google
+          user_fields: []
+      - model: authentik_flows.flow
+        id: google-flow
+        identifiers:
+          slug: google-login
+        attrs:
+          authentication: require_unauthenticated
+          designation: authentication
+          name: Google login
+          title: Welcome!
+      - model: authentik_flows.flowstagebinding
+        identifiers:
+          order: 10
+          stage: !KeyOf google-identification
+          target: !KeyOf google-flow
+      - model: authentik_brands.brand
+        identifiers:
+          domain: authentik-default
+        attrs:
+          flow_authentication: !KeyOf google-flow

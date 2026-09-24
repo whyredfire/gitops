@@ -1,0 +1,33 @@
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: splitpro-db
+  namespace: splitpro
+spec:
+  bootstrap:
+    initdb:
+      database: splitpro
+      owner: splitpro
+      postInitApplicationSQL:
+        - CREATE EXTENSION IF NOT EXISTS pg_cron;
+        - GRANT USAGE ON SCHEMA cron TO splitpro;
+        - GRANT REFERENCES ON cron.job TO splitpro;
+        - GRANT EXECUTE ON FUNCTION cron.alter_job(bigint, text, text, text, text, boolean) TO splitpro;
+  enablePDB: false
+  imageName: ghcr.io/whyredfire/postgres-cnpg:18-sha-62e724e
+  instances: 1
+  postgresql:
+    parameters:
+      cron.database_name: splitpro
+      cron.timezone: UTC
+      cron.use_background_workers: "on"
+    shared_preload_libraries:
+      - pg_cron
+  resources:
+    limits:
+      memory: 512Mi
+    requests:
+      cpu: 50m
+      memory: 128Mi
+  storage:
+    size: 1Gi

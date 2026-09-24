@@ -27,9 +27,7 @@ spec:
                 name: garage-ui-secrets
             auth:
               admin:
-                enabled: true
-                existingSecret:
-                  name: garage-ui-secrets
+                enabled: false
               jwt_private_key_secret:
                 name: garage-ui-secrets
             cors:

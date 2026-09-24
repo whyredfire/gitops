@@ -8,6 +8,7 @@ data:
     issuer: https://auth.whyredfire.dev/application/o/argocd/
     clientID: argocd
     clientSecret: $argocd-oidc:clientSecret
+    enablePKCEAuthentication: true
     requestedScopes:
       - openid
       - profile

@@ -23,6 +23,10 @@ patches:
     path: argocd-cm-oidc-patch.yaml
   - target:
       kind: ConfigMap
+      name: argocd-cm
+    path: argocd-cm-admin-disabled-patch.yaml
+  - target:
+      kind: ConfigMap
       name: argocd-rbac-cm
     path: argocd-rbac-cm-patch.yaml
   - target:

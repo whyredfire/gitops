@@ -6,6 +6,5 @@ resources:
   - argocd-repos.yaml
   - cert-manager.yaml
   - cnpg.yaml
-  - gateway-api.yaml
   - sealed-secrets.yaml
   - traefik.yaml

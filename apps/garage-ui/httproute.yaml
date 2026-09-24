@@ -15,7 +15,7 @@ spec:
       sectionName: websecure
   rules:
     - backendRefs:
-        - name: anubis
+        - name: garage-ui
           port: 80
       matches:
         - path:

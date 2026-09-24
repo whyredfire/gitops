@@ -27,12 +27,6 @@ spec:
                   name: traefik-gateway
                   namespace: traefik
                   sectionName: websecure
-              apiBackendRef:
-                name: anubis-api
-                port: 80
-              frontendBackendRef:
-                name: anubis-frontend
-                port: 80
             sites:
               parentRefs:
                 - kind: Gateway

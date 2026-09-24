@@ -4,3 +4,4 @@ resources:
   - anubis-key-sealedsecret.yaml
   - anubis-proxy.yaml
   - httproute.yaml
+  - oidc-sealedsecret.yaml

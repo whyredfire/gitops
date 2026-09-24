@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: argocd-cm
+data:
+  oidc.config: |
+    name: Authentik
+    issuer: https://auth.whyredfire.dev/application/o/argocd/
+    clientID: argocd
+    clientSecret: $argocd-oidc:clientSecret
+    requestedScopes:
+      - openid
+      - profile
+      - email

@@ -1,0 +1,29 @@
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: postgres
+  namespace: postgres
+spec:
+  enablePDB: false
+  imageName: ghcr.io/cloudnative-pg/postgresql:18
+  instances: 1
+  managed:
+    roles:
+      - ensure: present
+        login: true
+        name: authentik
+        passwordSecret:
+          name: authentik-db
+  postgresql:
+    # Each app role may only connect to the database of the same name.
+    pg_hba:
+      - host sameuser all all scram-sha-256
+      - host all all all reject
+  resources:
+    limits:
+      memory: 1Gi
+    requests:
+      cpu: 100m
+      memory: 256Mi
+  storage:
+    size: 5Gi

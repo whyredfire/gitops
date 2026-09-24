@@ -1,0 +1,55 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  annotations:
+    argocd.argoproj.io/sync-wave: "2"
+  name: authentik
+  namespace: argocd
+spec:
+  destination:
+    namespace: authentik
+    server: https://kubernetes.default.svc
+  project: default
+  sources:
+    - chart: authentik
+      helm:
+        values: |
+          authentik:
+            error_reporting:
+              enabled: false
+            postgresql:
+              host: postgres-rw.postgres.svc.cluster.local
+              name: authentik
+              user: authentik
+          global:
+            envFrom:
+              - secretRef:
+                  name: authentik-secrets
+          blueprints:
+            configMaps:
+              - authentik-blueprints
+          server:
+            resources:
+              limits:
+                memory: 1Gi
+              requests:
+                cpu: 100m
+                memory: 512Mi
+          worker:
+            resources:
+              limits:
+                memory: 1Gi
+              requests:
+                cpu: 50m
+                memory: 384Mi
+      repoURL: https://charts.goauthentik.io
+      targetRevision: 2026.8.3
+    - path: infra/authentik
+      repoURL: https://gitea.whyredfire.dev/whyredfire/gitops.git
+      targetRevision: main
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

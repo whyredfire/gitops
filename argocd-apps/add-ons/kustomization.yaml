@@ -4,7 +4,9 @@ resources:
   - anubis-operator.yaml
   - argocd-dashboard.yaml
   - argocd-repos.yaml
+  - authentik.yaml
   - cert-manager.yaml
   - cnpg.yaml
+  - postgres.yaml
   - sealed-secrets.yaml
   - traefik.yaml

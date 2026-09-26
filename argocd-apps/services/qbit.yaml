@@ -11,8 +11,8 @@ spec:
     server: https://kubernetes.default.svc
   project: default
   source:
-    path: qbit
-    repoURL: https://gitea.whyredfire.dev/whyredfire/gitops-private.git
+    path: apps/qbit
+    repoURL: https://gitea.whyredfire.dev/whyredfire/gitops.git
     targetRevision: main
   syncPolicy:
     automated:

@@ -1,0 +1,126 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: qbittorrent
+  namespace: qbit
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: qbittorrent
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: qbittorrent
+    spec:
+      containers:
+        - env:
+            - name: PUID
+              value: "1000"
+            - name: PGID
+              value: "1000"
+            - name: TZ
+              value: Etc/UTC
+            - name: WEBUI_PORT
+              value: "8080"
+            - name: TORRENTING_PORT
+              value: "6881"
+          image: lscr.io/linuxserver/qbittorrent:5.2.3_v2.0.15-ls478
+          livenessProbe:
+            httpGet:
+              path: /
+              port: http
+            initialDelaySeconds: 30
+            periodSeconds: 30
+          name: qbittorrent
+          ports:
+            - containerPort: 8080
+              name: http
+          volumeMounts:
+            - mountPath: /config
+              name: config
+            - mountPath: /downloads
+              name: downloads
+      dnsConfig:
+        nameservers:
+          - 127.0.0.1
+      dnsPolicy: None
+      initContainers:
+        - args:
+            - ip rule del table 51820; ip -6 rule del table 51820; exec /gluetun-entrypoint
+          command:
+            - /bin/sh
+            - -c
+          env:
+            - name: VPN_SERVICE_PROVIDER
+              value: custom
+            - name: VPN_TYPE
+              value: wireguard
+            - name: WIREGUARD_IMPLEMENTATION
+              value: kernelspace
+            - name: WIREGUARD_PRIVATE_KEY
+              valueFrom:
+                secretKeyRef:
+                  key: WIREGUARD_PRIVATE_KEY
+                  name: wireguard
+            - name: WIREGUARD_PUBLIC_KEY
+              valueFrom:
+                secretKeyRef:
+                  key: WIREGUARD_PUBLIC_KEY
+                  name: wireguard
+            - name: WIREGUARD_ADDRESSES
+              valueFrom:
+                secretKeyRef:
+                  key: WIREGUARD_ADDRESSES
+                  name: wireguard
+            - name: WIREGUARD_ENDPOINT_IP
+              valueFrom:
+                secretKeyRef:
+                  key: WIREGUARD_ENDPOINT_IP
+                  name: wireguard
+            - name: WIREGUARD_ENDPOINT_PORT
+              valueFrom:
+                secretKeyRef:
+                  key: WIREGUARD_ENDPOINT_PORT
+                  name: wireguard
+            - name: WIREGUARD_MTU
+              value: "1280"
+            - name: WIREGUARD_PERSISTENT_KEEPALIVE_INTERVAL
+              value: 25s
+            - name: FIREWALL_INPUT_PORTS
+              value: "8080"
+            - name: HEALTH_VPN_DURATION_INITIAL
+              value: 30s
+            - name: TZ
+              value: Etc/UTC
+          image: qmcgaw/gluetun:v3.41.3
+          livenessProbe:
+            exec:
+              command:
+                - /gluetun-entrypoint
+                - healthcheck
+            periodSeconds: 30
+            timeoutSeconds: 10
+          name: gluetun
+          restartPolicy: Always
+          securityContext:
+            capabilities:
+              add:
+                - NET_ADMIN
+          startupProbe:
+            exec:
+              command:
+                - /gluetun-entrypoint
+                - healthcheck
+            failureThreshold: 30
+            periodSeconds: 5
+            timeoutSeconds: 5
+      volumes:
+        - name: config
+          persistentVolumeClaim:
+            claimName: qbit-config-pvc
+        - hostPath:
+            path: /srv/media
+          name: downloads

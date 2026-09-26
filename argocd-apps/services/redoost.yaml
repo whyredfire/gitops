@@ -39,6 +39,19 @@ spec:
             websiteUpstream: garage.garage.svc.cluster.local:3902
             bucket: redoost-sites
             existingSecret: redoost-s3
+          networkPolicy:
+            enabled: true
+            gateway:
+              - namespaceSelector:
+                  matchLabels:
+                    kubernetes.io/metadata.name: traefik
+            s3:
+              - namespaceSelector:
+                  matchLabels:
+                    kubernetes.io/metadata.name: garage
+                podSelector:
+                  matchLabels:
+                    app.kubernetes.io/name: garage
     - path: apps/redoost
       repoURL: https://gitea.whyredfire.dev/whyredfire/gitops.git
       targetRevision: main

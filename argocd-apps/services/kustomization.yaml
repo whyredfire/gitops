@@ -11,3 +11,4 @@ resources:
   - redoost.yaml
   - rustbin.yaml
   - scriptscribe.yaml
+  - wireguard.yaml

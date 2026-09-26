@@ -1,0 +1,26 @@
+apiVersion: v1
+data:
+  wg0.conf: |
+    # Based on the image's /defaults/server.conf. The init container adds
+    # PrivateKey from the SealedSecret. After editing peers, bump
+    # wireguard.whyredfire.dev/config-revision on the Deployment to restart it.
+    [Interface]
+    Address = 10.13.13.1
+    ListenPort = 51820
+    MTU = 1280
+    PostUp = iptables -A FORWARD -i %i -j ACCEPT; iptables -A FORWARD -o %i -j ACCEPT; iptables -t nat -A POSTROUTING -o eth+ -j MASQUERADE
+    PostDown = iptables -D FORWARD -i %i -j ACCEPT; iptables -D FORWARD -o %i -j ACCEPT; iptables -t nat -D POSTROUTING -o eth+ -j MASQUERADE
+
+    [Peer]
+    # macbook
+    PublicKey = xuWFr3AHPeh/gRO5NiCGnwHcr0e/8InaroXcY8S5eC0=
+    AllowedIPs = 10.13.13.2/32
+
+    [Peer]
+    # phone
+    PublicKey = 8VBoG0Bpwv1UhAOethIgRJXmaNWPErSWkqcfdjGmhHs=
+    AllowedIPs = 10.13.13.3/32
+kind: ConfigMap
+metadata:
+  name: wireguard
+  namespace: wireguard

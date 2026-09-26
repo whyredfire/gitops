@@ -1,0 +1,83 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: wireguard
+  namespace: wireguard
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: wireguard
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        wireguard.whyredfire.dev/config-revision: "1"
+      labels:
+        app.kubernetes.io/name: wireguard
+    spec:
+      containers:
+        - env:
+            - name: PUID
+              value: "1000"
+            - name: PGID
+              value: "1000"
+            - name: TZ
+              value: Etc/UTC
+          image: lscr.io/linuxserver/wireguard:1.0.20260223-r0-ls123
+          livenessProbe:
+            exec:
+              command:
+                - wg
+                - show
+                - wg0
+            initialDelaySeconds: 30
+            periodSeconds: 30
+          name: wireguard
+          ports:
+            - containerPort: 51820
+              name: wireguard
+              protocol: UDP
+          securityContext:
+            capabilities:
+              add:
+                - NET_ADMIN
+          volumeMounts:
+            - mountPath: /config
+              name: config
+      initContainers:
+        - args:
+            - |
+              set -euo pipefail
+              umask 077
+              mkdir -p /config/wg_confs
+              awk -v keyfile=/secret/private-key '
+                { print }
+                /^\[Interface\]/ { getline key < keyfile; print "PrivateKey = " key }
+              ' /template/wg0.conf > /config/wg_confs/wg0.conf
+          command:
+            - /bin/bash
+            - -c
+          image: lscr.io/linuxserver/wireguard:1.0.20260223-r0-ls123
+          name: render-config
+          volumeMounts:
+            - mountPath: /config
+              name: config
+            - mountPath: /template
+              name: template
+              readOnly: true
+            - mountPath: /secret
+              name: secret
+              readOnly: true
+      volumes:
+        - emptyDir:
+            medium: Memory
+          name: config
+        - configMap:
+            name: wireguard
+          name: template
+        - name: secret
+          secret:
+            defaultMode: 256
+            secretName: wireguard

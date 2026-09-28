@@ -44,7 +44,7 @@ spec:
                 memory: 384Mi
       repoURL: https://charts.goauthentik.io
       targetRevision: 2026.8.3
-    - path: infra/authentik
+    - path: add-ons/authentik
       repoURL: https://gitea.whyredfire.dev/whyredfire/gitops.git
       targetRevision: main
   syncPolicy:

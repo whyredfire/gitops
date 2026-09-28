@@ -11,7 +11,7 @@ spec:
     server: https://kubernetes.default.svc
   project: default
   source:
-    path: infra/postgres
+    path: add-ons/postgres
     repoURL: https://gitea.whyredfire.dev/whyredfire/gitops.git
     targetRevision: main
   syncPolicy:

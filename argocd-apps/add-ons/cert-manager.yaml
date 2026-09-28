@@ -23,7 +23,7 @@ spec:
               ExperimentalGatewayAPISupport: true
       repoURL: https://charts.jetstack.io
       targetRevision: v1.21.1
-    - path: infra/cert-manager
+    - path: add-ons/cert-manager
       repoURL: https://gitea.whyredfire.dev/whyredfire/gitops.git
       targetRevision: main
   syncPolicy:

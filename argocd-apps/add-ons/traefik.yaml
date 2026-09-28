@@ -55,7 +55,7 @@ spec:
                     group: ""
       repoURL: https://traefik.github.io/charts
       targetRevision: 41.6.0
-    - path: infra/traefik
+    - path: add-ons/traefik
       repoURL: https://gitea.whyredfire.dev/whyredfire/gitops.git
       targetRevision: main
   syncPolicy:

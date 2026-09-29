@@ -1,0 +1,180 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  annotations:
+    argocd.argoproj.io/sync-wave: "3"
+  name: kube-prometheus-stack
+  namespace: argocd
+spec:
+  destination:
+    namespace: monitoring
+    server: https://kubernetes.default.svc
+  project: default
+  sources:
+    - chart: kube-prometheus-stack
+      helm:
+        values: |
+          alertmanager:
+            enabled: false
+          kubelet:
+            serviceMonitor:
+              # The first rule is the chart's default, as lists are replaced; k3s also serves apiserver series here.
+              metricRelabelings:
+                - action: drop
+                  sourceLabels: [__name__, le]
+                  regex: (csi_operations|storage_operation_duration)_seconds_bucket;(0.25|2.5|15|25|120|600)(\.0)?
+                - action: drop
+                  sourceLabels: [__name__]
+                  regex: (apiserver|etcd|kine)_.*
+          # Scraped through ScrapeConfigs since ArgoCD ignores Endpoints; enabled for dashboards and rules.
+          kubeControllerManager:
+            service:
+              enabled: false
+            serviceMonitor:
+              enabled: false
+          kubeScheduler:
+            service:
+              enabled: false
+            serviceMonitor:
+              enabled: false
+          kubeProxy:
+            service:
+              enabled: false
+            serviceMonitor:
+              enabled: false
+          # k3s runs on SQLite (kine), there is no etcd to scrape.
+          kubeEtcd:
+            enabled: false
+          prometheusOperator:
+            admissionWebhooks:
+              certManager:
+                enabled: true
+            resources:
+              limits:
+                cpu: 200m
+                memory: 256Mi
+              requests:
+                cpu: 20m
+                memory: 64Mi
+            prometheusConfigReloader:
+              resources:
+                limits:
+                  cpu: 50m
+                  memory: 64Mi
+                requests:
+                  cpu: 10m
+                  memory: 32Mi
+          kube-state-metrics:
+            resources:
+              limits:
+                cpu: 200m
+                memory: 256Mi
+              requests:
+                cpu: 20m
+                memory: 64Mi
+          prometheus-node-exporter:
+            resources:
+              limits:
+                cpu: 200m
+                memory: 128Mi
+              requests:
+                cpu: 20m
+                memory: 32Mi
+          prometheus:
+            prometheusSpec:
+              retention: 90d
+              retentionSize: 45GB
+              # Pick up monitors and rules from every namespace, not just this release.
+              podMonitorSelectorNilUsesHelmValues: false
+              probeSelectorNilUsesHelmValues: false
+              ruleSelectorNilUsesHelmValues: false
+              scrapeConfigSelectorNilUsesHelmValues: false
+              serviceMonitorSelectorNilUsesHelmValues: false
+              resources:
+                limits:
+                  cpu: "1"
+                  memory: 3Gi
+                requests:
+                  cpu: 200m
+                  memory: 1Gi
+              storageSpec:
+                volumeClaimTemplate:
+                  spec:
+                    accessModes:
+                      - ReadWriteOnce
+                    resources:
+                      requests:
+                        storage: 50Gi
+          grafana:
+            admin:
+              existingSecret: grafana-admin
+            additionalDataSources:
+              - name: Loki
+                type: loki
+                uid: loki
+                url: http://loki.monitoring.svc.cluster.local:3100
+            envValueFrom:
+              GF_AUTH_GENERIC_OAUTH_CLIENT_SECRET:
+                secretKeyRef:
+                  name: grafana-oidc
+                  key: client-secret
+              GF_DATABASE_PASSWORD:
+                secretKeyRef:
+                  name: grafana-db
+                  key: password
+            grafana.ini:
+              database:
+                type: postgres
+                host: postgres-rw.postgres.svc.cluster.local:5432
+                name: grafana
+                user: grafana
+                ssl_mode: require
+              server:
+                root_url: https://grafana.whyredfire.dev
+              auth:
+                # Break-glass admin login stays reachable at /login?disableAutoLogin=true
+                oauth_auto_login: true
+                signout_redirect_url: https://auth.whyredfire.dev/application/o/grafana/end-session/
+              auth.generic_oauth:
+                enabled: true
+                name: Authentik
+                client_id: grafana
+                scopes: openid profile email
+                auth_url: https://auth.whyredfire.dev/application/o/authorize/
+                token_url: https://auth.whyredfire.dev/application/o/token/
+                api_url: https://auth.whyredfire.dev/application/o/userinfo/
+                use_pkce: true
+                login_attribute_path: preferred_username
+                role_attribute_path: contains(groups, 'admins') && 'Admin'
+                role_attribute_strict: true
+            resources:
+              limits:
+                cpu: 500m
+                memory: 512Mi
+              requests:
+                cpu: 50m
+                memory: 256Mi
+            sidecar:
+              dashboards:
+                searchNamespace: ALL
+              resources:
+                limits:
+                  cpu: 100m
+                  memory: 256Mi
+                requests:
+                  cpu: 10m
+                  memory: 64Mi
+            testFramework:
+              enabled: false
+      repoURL: https://prometheus-community.github.io/helm-charts
+      targetRevision: 91.8.2
+    - path: add-ons/kube-prometheus-stack
+      repoURL: https://gitea.whyredfire.dev/whyredfire/gitops.git
+      targetRevision: main
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - ServerSideApply=true

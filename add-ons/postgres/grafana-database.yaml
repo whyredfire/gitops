@@ -1,0 +1,11 @@
+apiVersion: postgresql.cnpg.io/v1
+kind: Database
+metadata:
+  name: grafana
+  namespace: postgres
+spec:
+  cluster:
+    name: postgres
+  databaseReclaimPolicy: retain
+  name: grafana
+  owner: grafana

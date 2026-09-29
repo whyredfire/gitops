@@ -4,3 +4,5 @@ resources:
   - cluster.yaml
   - authentik-db-sealedsecret.yaml
   - authentik-database.yaml
+  - grafana-db-sealedsecret.yaml
+  - grafana-database.yaml

@@ -1,0 +1,59 @@
+# k3s control plane (bound in /etc/rancher/k3s/config.yaml); every endpoint also serves apiserver series.
+apiVersion: monitoring.coreos.com/v1alpha1
+kind: ScrapeConfig
+metadata:
+  name: kube-controller-manager
+  namespace: monitoring
+spec:
+  jobName: kube-controller-manager
+  scheme: HTTPS
+  tlsConfig:
+    insecureSkipVerify: true
+  authorization:
+    credentials:
+      name: kube-prometheus-stack-prometheus-token
+      key: token
+  staticConfigs:
+    - targets:
+        - 192.168.2.5:10257
+  metricRelabelings:
+    - action: drop
+      sourceLabels: [__name__]
+      regex: (apiserver|etcd|kine)_.*
+---
+apiVersion: monitoring.coreos.com/v1alpha1
+kind: ScrapeConfig
+metadata:
+  name: kube-scheduler
+  namespace: monitoring
+spec:
+  jobName: kube-scheduler
+  scheme: HTTPS
+  tlsConfig:
+    insecureSkipVerify: true
+  authorization:
+    credentials:
+      name: kube-prometheus-stack-prometheus-token
+      key: token
+  staticConfigs:
+    - targets:
+        - 192.168.2.5:10259
+  metricRelabelings:
+    - action: drop
+      sourceLabels: [__name__]
+      regex: (apiserver|etcd|kine)_.*
+---
+apiVersion: monitoring.coreos.com/v1alpha1
+kind: ScrapeConfig
+metadata:
+  name: kube-proxy
+  namespace: monitoring
+spec:
+  jobName: kube-proxy
+  staticConfigs:
+    - targets:
+        - 192.168.2.5:10249
+  metricRelabelings:
+    - action: drop
+      sourceLabels: [__name__]
+      regex: (apiserver|etcd|kine)_.*

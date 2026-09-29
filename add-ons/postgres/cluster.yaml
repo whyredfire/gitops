@@ -14,6 +14,11 @@ spec:
         name: authentik
         passwordSecret:
           name: authentik-db
+      - ensure: present
+        login: true
+        name: grafana
+        passwordSecret:
+          name: grafana-db
   postgresql:
     # Each app role may only connect to the database of the same name.
     pg_hba:

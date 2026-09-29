@@ -6,3 +6,5 @@ resources:
   - authentik-database.yaml
   - grafana-db-sealedsecret.yaml
   - grafana-database.yaml
+  - legislative-db-sealedsecret.yaml
+  - legislative-database.yaml

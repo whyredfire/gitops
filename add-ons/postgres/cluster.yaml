@@ -19,6 +19,11 @@ spec:
         name: grafana
         passwordSecret:
           name: grafana-db
+      - ensure: present
+        login: true
+        name: legislative
+        passwordSecret:
+          name: legislative-db
   postgresql:
     # Each app role may only connect to the database of the same name.
     pg_hba:

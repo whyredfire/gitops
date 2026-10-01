@@ -24,6 +24,11 @@ spec:
         name: legislative
         passwordSecret:
           name: legislative-db
+      - ensure: present
+        login: true
+        name: redoost
+        passwordSecret:
+          name: redoost-db
   postgresql:
     # Each app role may only connect to the database of the same name.
     pg_hba:

@@ -39,6 +39,8 @@ spec:
             websiteUpstream: garage.garage.svc.cluster.local:3902
             bucket: redoost-sites
             existingSecret: redoost-s3
+          database:
+            existingSecret: redoost-db
           networkPolicy:
             enabled: true
             gateway:
@@ -52,6 +54,13 @@ spec:
                 podSelector:
                   matchLabels:
                     app.kubernetes.io/name: garage
+            database:
+              - namespaceSelector:
+                  matchLabels:
+                    kubernetes.io/metadata.name: postgres
+                podSelector:
+                  matchLabels:
+                    cnpg.io/cluster: postgres
     - path: apps/redoost
       repoURL: https://gitea.whyredfire.dev/whyredfire/gitops.git
       targetRevision: main

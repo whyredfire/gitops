@@ -8,3 +8,5 @@ resources:
   - grafana-database.yaml
   - legislative-db-sealedsecret.yaml
   - legislative-database.yaml
+  - redoost-db-sealedsecret.yaml
+  - redoost-database.yaml

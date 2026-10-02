@@ -3,3 +3,4 @@ kind: Kustomization
 resources:
   - sealed-secret.yaml
   - database-sealedsecret.yaml
+  - auth-sealedsecret.yaml

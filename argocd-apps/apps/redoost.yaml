@@ -41,6 +41,12 @@ spec:
             existingSecret: redoost-s3
           database:
             existingSecret: redoost-db
+          auth:
+            existingSecret: redoost-auth
+            oidc:
+              issuer: https://accounts.google.com
+              provider: google
+              clientId: 197461299437-5uvtgdgfoaqnm5e8un1h92286393gjlf.apps.googleusercontent.com
           networkPolicy:
             enabled: true
             gateway:

@@ -99,3 +99,42 @@ data:
           name: Grafana
           provider: !KeyOf grafana-provider
           meta_launch_url: https://grafana.whyredfire.dev
+  wireguard-admin.yaml: |
+    version: 1
+    metadata:
+      name: WireGuard admin
+    entries:
+      - model: authentik_providers_proxy.proxyprovider
+        id: wireguard-admin-provider
+        identifiers:
+          name: wireguard-admin
+        attrs:
+          authorization_flow: !Find [authentik_flows.flow, [slug, default-provider-authorization-implicit-consent]]
+          invalidation_flow: !Find [authentik_flows.flow, [slug, default-provider-invalidation-flow]]
+          external_host: https://wg-admin.whyredfire.dev
+          mode: forward_single
+      - model: authentik_core.application
+        id: wireguard-admin
+        identifiers:
+          slug: wireguard-admin
+        attrs:
+          name: WireGuard Admin
+          provider: !KeyOf wireguard-admin-provider
+          meta_launch_url: https://wg-admin.whyredfire.dev
+      # Issuing VPN clients is admin-only.
+      - model: authentik_policies.policybinding
+        identifiers:
+          order: 0
+          target: !KeyOf wireguard-admin
+        attrs:
+          group: !Find [authentik_core.group, [name, admins]]
+      # This replaces the embedded outpost's provider list, so it also names the
+      # providers created in the UI.
+      - model: authentik_outposts.outpost
+        identifiers:
+          managed: goauthentik.io/outposts/embedded
+        attrs:
+          providers:
+            - !Find [authentik_providers_proxy.proxyprovider, [name, garage-ui]]
+            - !Find [authentik_providers_proxy.proxyprovider, [name, qbittorrent]]
+            - !KeyOf wireguard-admin-provider

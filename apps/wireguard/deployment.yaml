@@ -12,72 +12,67 @@ spec:
     type: Recreate
   template:
     metadata:
-      annotations:
-        wireguard.whyredfire.dev/config-revision: "1"
       labels:
         app.kubernetes.io/name: wireguard
     spec:
       containers:
-        - env:
-            - name: PUID
-              value: "1000"
-            - name: PGID
-              value: "1000"
-            - name: TZ
-              value: Etc/UTC
-          image: lscr.io/linuxserver/wireguard:1.0.20260223-r0-ls123
-          livenessProbe:
-            exec:
-              command:
-                - wg
-                - show
-                - wg0
-            initialDelaySeconds: 30
-            periodSeconds: 30
-          name: wireguard
+        - args:
+            - |
+              # The image points iptables at the legacy backend, which the
+              # node's kernel doesn't have. Use nftables, as the node does.
+              for b in iptables iptables-save iptables-restore ip6tables ip6tables-save ip6tables-restore; do
+                ln -sf xtables-nft-multi "/usr/sbin/$b"
+              done
+              exec /usr/bin/dumb-init node server/index.mjs
+          command:
+            - /bin/sh
+            - -c
+          env:
+            - name: DISABLE_IPV6
+              value: "true"
+            - name: INIT_ENABLED
+              value: "true"
+            - name: INIT_ALLOWED_IPS
+              value: 192.168.2.0/24
+            - name: INIT_DNS
+              value: 192.168.2.1
+          image: ghcr.io/wg-easy/wg-easy:15.4.0
+          name: wg-easy
           ports:
             - containerPort: 51820
               name: wireguard
               protocol: UDP
+            - containerPort: 51821
+              name: http
           securityContext:
             capabilities:
               add:
                 - NET_ADMIN
           volumeMounts:
-            - mountPath: /config
-              name: config
+            - mountPath: /etc/wireguard
+              name: data
       initContainers:
         - args:
             - |
-              set -euo pipefail
-              umask 077
-              mkdir -p /config/wg_confs
-              awk -v keyfile=/secret/private-key '
-                { print }
-                /^\[Interface\]/ { getline key < keyfile; print "PrivateKey = " key }
-              ' /template/wg0.conf > /config/wg_confs/wg0.conf
+              # Rules in the pod's own network namespace, never the node's.
+              # VPN clients may reach the home LAN, but not this pod (the web
+              # UI), the pod network or the service network. The mangle table
+              # runs before wg-easy's own filter rules, so its per-client
+              # firewall can't open these up.
+              set -eu
+              iptables-nft -t mangle -A PREROUTING -i wg0 -m addrtype --dst-type LOCAL -j DROP
+              iptables-nft -t mangle -A PREROUTING -i wg0 -d 10.42.0.0/16 -j DROP
+              iptables-nft -t mangle -A PREROUTING -i wg0 -d 10.43.0.0/16 -j DROP
           command:
-            - /bin/bash
+            - /bin/sh
             - -c
-          image: lscr.io/linuxserver/wireguard:1.0.20260223-r0-ls123
-          name: render-config
-          volumeMounts:
-            - mountPath: /config
-              name: config
-            - mountPath: /template
-              name: template
-              readOnly: true
-            - mountPath: /secret
-              name: secret
-              readOnly: true
+          image: ghcr.io/wg-easy/wg-easy:15.4.0
+          name: firewall
+          securityContext:
+            capabilities:
+              add:
+                - NET_ADMIN
       volumes:
-        - emptyDir:
-            medium: Memory
-          name: config
-        - configMap:
-            name: wireguard
-          name: template
-        - name: secret
-          secret:
-            defaultMode: 256
-            secretName: wireguard
+        - name: data
+          persistentVolumeClaim:
+            claimName: wireguard-data

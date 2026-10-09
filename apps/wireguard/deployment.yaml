@@ -23,6 +23,10 @@ spec:
               for b in iptables iptables-save iptables-restore ip6tables ip6tables-save ip6tables-restore; do
                 ln -sf xtables-nft-multi "/usr/sbin/$b"
               done
+              # Only used to skip the first-run setup; password login is
+              # disabled in favour of authentik.
+              INIT_PASSWORD="$(head -c 32 /dev/urandom | od -An -tx1 | tr -d ' \n')"
+              export INIT_PASSWORD
               exec /usr/bin/dumb-init node server/index.mjs
           command:
             - /bin/sh
@@ -30,16 +34,41 @@ spec:
           env:
             - name: DISABLE_IPV6
               value: "true"
-            - name: INIT_ENABLED
+            - name: DISABLE_PASSWORD_AUTH
               value: "true"
             - name: INIT_ALLOWED_IPS
               value: 192.168.2.0/24
             - name: INIT_DNS
               value: 192.168.2.1
+            - name: INIT_ENABLED
+              value: "true"
+            - name: INIT_HOST
+              value: wg.whyredfire.dev
+            - name: INIT_PORT
+              value: "27299"
+            - name: INIT_USERNAME
+              value: admin
+            - name: OAUTH_AUTO_LAUNCH
+              value: oidc
+            - name: OAUTH_AUTO_REGISTER
+              value: "true"
+            - name: OAUTH_OIDC_CLIENT_ID
+              value: wireguard-admin
+            - name: OAUTH_OIDC_CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  key: oidc-client-secret
+                  name: wireguard
+            - name: OAUTH_OIDC_NAME
+              value: authentik
+            - name: OAUTH_OIDC_SERVER
+              value: https://auth.whyredfire.dev/application/o/wireguard-admin/
+            - name: OAUTH_PROVIDERS
+              value: oidc
           image: ghcr.io/wg-easy/wg-easy:15.4.0
           name: wg-easy
           ports:
-            - containerPort: 51820
+            - containerPort: 27299
               name: wireguard
               protocol: UDP
             - containerPort: 51821

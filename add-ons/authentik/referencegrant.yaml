@@ -11,9 +11,6 @@ spec:
     - group: gateway.networking.k8s.io
       kind: HTTPRoute
       namespace: qbit
-    - group: gateway.networking.k8s.io
-      kind: HTTPRoute
-      namespace: wireguard
   to:
     - group: ""
       kind: Service

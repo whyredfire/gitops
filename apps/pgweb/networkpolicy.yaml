@@ -4,8 +4,7 @@ metadata:
   name: pgweb
   namespace: pgweb
 spec:
-  # Only traefik may reach pgweb, so authentik can't be bypassed from inside
-  # the cluster, and pgweb may only reach postgres.
+  # Only traefik may reach pgweb, so authentik can't be bypassed.
   egress:
     - ports:
         - port: 53

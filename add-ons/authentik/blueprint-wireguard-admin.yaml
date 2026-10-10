@@ -9,8 +9,7 @@ data:
     metadata:
       name: WireGuard admin
     entries:
-      # wg-easy rejects logins unless email_verified is true; the default email
-      # mapping always sends false.
+      # wg-easy requires email_verified, which the default mapping sends as false.
       - model: authentik_providers_oauth2.scopemapping
         id: verified-email
         identifiers:
@@ -52,7 +51,7 @@ data:
           name: WireGuard Admin
           provider: !KeyOf wireguard-admin-provider
           meta_launch_url: https://wg-admin.whyredfire.dev
-      # wg-easy makes every user it registers an admin, so only admins may log in.
+      # wg-easy makes every user an admin.
       - model: authentik_policies.policybinding
         identifiers:
           order: 0

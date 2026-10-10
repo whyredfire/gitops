@@ -16,8 +16,6 @@ spec:
         app.kubernetes.io/name: pgweb
     spec:
       containers:
-        # Only bookmarked databases can be connected to, picked on the
-        # connect screen; there is one bookmark per app database.
         - args:
             - --bookmarks-dir=/bookmarks
             - --bookmarks-only

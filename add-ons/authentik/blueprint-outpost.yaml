@@ -24,7 +24,6 @@ data:
           identifiers:
             path: mounted/cm-blueprint-qbittorrent/qbittorrent.yaml
           required: true
-      # Serves forward auth for the apps behind the authentik middleware.
       - model: authentik_outposts.outpost
         identifiers:
           managed: goauthentik.io/outposts/embedded

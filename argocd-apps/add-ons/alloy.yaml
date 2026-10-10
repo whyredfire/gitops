@@ -38,6 +38,22 @@ spec:
                   target_label  = "pod"
                 }
                 rule {
+                  source_labels = ["__meta_kubernetes_pod_controller_name"]
+                  target_label  = "workload"
+                }
+                // A deployment owns its pods through a ReplicaSet named <deployment>-<hash>.
+                rule {
+                  source_labels = ["__meta_kubernetes_pod_controller_kind", "__meta_kubernetes_pod_controller_name"]
+                  regex         = "ReplicaSet;(.+)-[a-z0-9]+"
+                  target_label  = "workload"
+                }
+                // A cronjob's runs are Jobs named <cronjob>-<timestamp>.
+                rule {
+                  source_labels = ["__meta_kubernetes_pod_controller_kind", "__meta_kubernetes_pod_controller_name"]
+                  regex         = "Job;(.+)-[0-9]+"
+                  target_label  = "workload"
+                }
+                rule {
                   source_labels = ["__meta_kubernetes_pod_container_name"]
                   target_label  = "container"
                 }

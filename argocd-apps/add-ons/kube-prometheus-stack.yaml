@@ -17,34 +17,37 @@ spec:
         values: |
           alertmanager:
             enabled: false
+          # Only node-exporter and cAdvisor are scraped.
+          defaultRules:
+            create: false
           kubelet:
             serviceMonitor:
-              # The first rule is the chart's default, as lists are replaced; k3s also serves apiserver series here.
-              metricRelabelings:
-                - action: drop
-                  sourceLabels: [__name__, le]
-                  regex: (csi_operations|storage_operation_duration)_seconds_bucket;(0.25|2.5|15|25|120|600)(\.0)?
-                - action: drop
+              interval: 60s
+              kubelet: false
+              probes: false
+              cAdvisorMetricRelabelings:
+                - action: keep
                   sourceLabels: [__name__]
-                  regex: (apiserver|etcd|kine)_.*
-          # Scraped through ScrapeConfigs since ArgoCD ignores Endpoints; enabled for dashboards and rules.
+                  regex: container_(cpu_usage_seconds_total|memory_working_set_bytes|fs_(reads|writes)_bytes_total|network_(receive|transmit)_bytes_total)
+                - action: drop
+                  sourceLabels: [__name__, interface]
+                  regex: container_network_.+;(br-|cni|docker|flannel|lo|tailscale|tun|veth|wg|wlan).*
+                - action: drop
+                  sourceLabels: [id, pod]
+                  regex: .+;
+          kubeApiServer:
+            enabled: false
           kubeControllerManager:
-            service:
-              enabled: false
-            serviceMonitor:
-              enabled: false
+            enabled: false
           kubeScheduler:
-            service:
-              enabled: false
-            serviceMonitor:
-              enabled: false
+            enabled: false
           kubeProxy:
-            service:
-              enabled: false
-            serviceMonitor:
-              enabled: false
-          # k3s runs on SQLite (kine), there is no etcd to scrape.
+            enabled: false
           kubeEtcd:
+            enabled: false
+          coreDns:
+            enabled: false
+          kubeStateMetrics:
             enabled: false
           prometheusOperator:
             admissionWebhooks:
@@ -65,15 +68,15 @@ spec:
                 requests:
                   cpu: 10m
                   memory: 32Mi
-          kube-state-metrics:
-            resources:
-              limits:
-                cpu: 200m
-                memory: 256Mi
-              requests:
-                cpu: 20m
-                memory: 64Mi
+            serviceMonitor:
+              selfMonitor: false
           prometheus-node-exporter:
+            # The first two are the chart's defaults, as lists are replaced.
+            extraArgs:
+              - --collector.filesystem.mount-points-exclude=^/(dev|proc|sys|run/containerd/.+|var/lib/docker/.+|var/lib/kubelet/.+)($|/)
+              - --collector.filesystem.fs-types-exclude=^(autofs|binfmt_misc|bpf|cgroup2?|configfs|debugfs|devpts|devtmpfs|fusectl|hugetlbfs|iso9660|mqueue|nsfs|overlay|proc|procfs|pstore|rpc_pipefs|securityfs|selinuxfs|squashfs|sysfs|tracefs|erofs)$
+              - --collector.netclass.ignored-devices=^(veth.*|br-.*|docker0|cni0|lo)$
+              - --collector.netdev.device-exclude=^(veth.*|br-.*|docker0|cni0|lo)$
             resources:
               limits:
                 cpu: 200m
@@ -82,7 +85,10 @@ spec:
                 cpu: 20m
                 memory: 32Mi
           prometheus:
+            serviceMonitor:
+              selfMonitor: false
             prometheusSpec:
+              scrapeInterval: 60s
               retention: 90d
               retentionSize: 45GB
               # Pick up monitors and rules from every namespace, not just this release.
@@ -114,6 +120,8 @@ spec:
                 type: loki
                 uid: loki
                 url: http://loki.monitoring.svc.cluster.local:3100
+                isDefault: true
+            defaultDashboardsEnabled: false
             envValueFrom:
               GF_AUTH_GENERIC_OAUTH_CLIENT_SECRET:
                 secretKeyRef:
@@ -155,7 +163,13 @@ spec:
               requests:
                 cpu: 50m
                 memory: 256Mi
+            serviceMonitor:
+              enabled: false
             sidecar:
+              datasources:
+                alertmanager:
+                  enabled: false
+                isDefaultDatasource: false
               dashboards:
                 searchNamespace: ALL
               resources:

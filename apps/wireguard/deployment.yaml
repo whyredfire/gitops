@@ -18,13 +18,11 @@ spec:
       containers:
         - args:
             - |
-              # The image points iptables at the legacy backend, which the
-              # node's kernel doesn't have. Use nftables, as the node does.
+              # The node's kernel only has nftables, the image defaults to legacy iptables.
               for b in iptables iptables-save iptables-restore ip6tables ip6tables-save ip6tables-restore; do
                 ln -sf xtables-nft-multi "/usr/sbin/$b"
               done
-              # Only used to skip the first-run setup; password login is
-              # disabled in favour of authentik.
+              # Only skips the setup wizard; password login is disabled.
               INIT_PASSWORD="$(head -c 32 /dev/urandom | od -An -tx1 | tr -d ' \n')"
               export INIT_PASSWORD
               exec /usr/bin/dumb-init node server/index.mjs
@@ -83,11 +81,7 @@ spec:
       initContainers:
         - args:
             - |
-              # Rules in the pod's own network namespace, never the node's.
-              # VPN clients may reach the home LAN, but not this pod (the web
-              # UI), the pod network or the service network. The mangle table
-              # runs before wg-easy's own filter rules, so its per-client
-              # firewall can't open these up.
+              # VPN clients may reach the LAN, not this pod or the cluster networks.
               set -eu
               iptables-nft -t mangle -A PREROUTING -i wg0 -m addrtype --dst-type LOCAL -j DROP
               iptables-nft -t mangle -A PREROUTING -i wg0 -d 10.42.0.0/16 -j DROP

@@ -15,6 +15,13 @@ spec:
     - chart: traefik
       helm:
         values: |
+          # Query strings are dropped, as OAuth callbacks carry codes.
+          accessLog:
+            enabled: true
+            format: json
+            fields:
+              queryParameters:
+                defaultMode: drop
           ingressClass:
             enabled: false
           providers:

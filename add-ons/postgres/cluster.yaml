@@ -37,9 +37,7 @@ spec:
         passwordSecret:
           name: redoost-db
   postgresql:
-    # Each app role may only connect to the database of the same name.
-    # pgweb is read-only and may browse every database except authentik's,
-    # which holds credentials and session tokens.
+    # Each app role may only connect to its own database; pgweb to all but authentik.
     pg_hba:
       - host sameuser all all scram-sha-256
       - host authentik pgweb all reject

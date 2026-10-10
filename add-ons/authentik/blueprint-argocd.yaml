@@ -9,7 +9,6 @@ data:
     metadata:
       name: ArgoCD
     entries:
-      # Public client: the CLI can't keep a secret, so ArgoCD uses PKCE instead.
       - model: authentik_providers_oauth2.oauth2provider
         id: argocd-provider
         identifiers:

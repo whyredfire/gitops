@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: pgweb-bookmark-legislative
+  namespace: pgweb
+data:
+  legislative.toml: |
+    host = "postgres-rw.postgres.svc.cluster.local"
+    user = "pgweb"
+    passwordvar = "DATABASE_PASSWORD"
+    database = "legislative"
+    sslmode = "require"
+    readonly = true

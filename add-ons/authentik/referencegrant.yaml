@@ -10,6 +10,9 @@ spec:
       namespace: garage
     - group: gateway.networking.k8s.io
       kind: HTTPRoute
+      namespace: pgweb
+    - group: gateway.networking.k8s.io
+      kind: HTTPRoute
       namespace: qbit
   to:
     - group: ""

@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: pgweb-bookmark-grafana
+  namespace: pgweb
+data:
+  grafana.toml: |
+    host = "postgres-rw.postgres.svc.cluster.local"
+    user = "pgweb"
+    passwordvar = "DATABASE_PASSWORD"
+    database = "grafana"
+    sslmode = "require"
+    readonly = true

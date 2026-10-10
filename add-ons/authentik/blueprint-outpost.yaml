@@ -17,6 +17,11 @@ data:
       - model: authentik_blueprints.metaapplyblueprint
         attrs:
           identifiers:
+            path: mounted/cm-blueprint-pgweb/pgweb.yaml
+          required: true
+      - model: authentik_blueprints.metaapplyblueprint
+        attrs:
+          identifiers:
             path: mounted/cm-blueprint-qbittorrent/qbittorrent.yaml
           required: true
       # Serves forward auth for the apps behind the authentik middleware.
@@ -26,4 +31,5 @@ data:
         attrs:
           providers:
             - !Find [authentik_providers_proxy.proxyprovider, [name, garage-ui]]
+            - !Find [authentik_providers_proxy.proxyprovider, [name, pgweb]]
             - !Find [authentik_providers_proxy.proxyprovider, [name, qbittorrent]]

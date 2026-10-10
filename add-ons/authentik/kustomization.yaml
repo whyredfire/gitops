@@ -7,6 +7,7 @@ resources:
   - blueprint-google-login.yaml
   - blueprint-grafana.yaml
   - blueprint-outpost.yaml
+  - blueprint-pgweb.yaml
   - blueprint-qbittorrent.yaml
   - blueprint-wireguard-admin.yaml
   - httproute.yaml

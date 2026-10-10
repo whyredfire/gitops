@@ -1,0 +1,77 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pgweb
+  namespace: pgweb
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: pgweb
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: pgweb
+    spec:
+      containers:
+        # Only bookmarked databases can be connected to, picked on the
+        # connect screen; there is one bookmark per app database.
+        - args:
+            - --bookmarks-dir=/bookmarks
+            - --bookmarks-only
+            - --no-ssh
+            - --readonly
+            - --skip-open
+          env:
+            - name: DATABASE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: password
+                  name: pgweb
+          image: docker.io/sosedoff/pgweb:0.17.0
+          livenessProbe:
+            httpGet:
+              path: /
+              port: http
+          name: pgweb
+          ports:
+            - containerPort: 8081
+              name: http
+          readinessProbe:
+            httpGet:
+              path: /
+              port: http
+          resources:
+            limits:
+              cpu: 500m
+              memory: 128Mi
+            requests:
+              cpu: 10m
+              memory: 32Mi
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
+          volumeMounts:
+            - mountPath: /bookmarks
+              name: bookmarks
+              readOnly: true
+      securityContext:
+        runAsGroup: 1000
+        runAsNonRoot: true
+        runAsUser: 1000
+        seccompProfile:
+          type: RuntimeDefault
+      volumes:
+        - name: bookmarks
+          projected:
+            sources:
+              - configMap:
+                  name: pgweb-bookmark-grafana
+              - configMap:
+                  name: pgweb-bookmark-legislative
+              - configMap:
+                  name: pgweb-bookmark-redoost

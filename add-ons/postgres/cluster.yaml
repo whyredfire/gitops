@@ -25,14 +25,25 @@ spec:
         passwordSecret:
           name: legislative-db
       - ensure: present
+        inRoles:
+          - pg_read_all_data
+        login: true
+        name: pgweb
+        passwordSecret:
+          name: pgweb-db
+      - ensure: present
         login: true
         name: redoost
         passwordSecret:
           name: redoost-db
   postgresql:
     # Each app role may only connect to the database of the same name.
+    # pgweb is read-only and may browse every database except authentik's,
+    # which holds credentials and session tokens.
     pg_hba:
       - host sameuser all all scram-sha-256
+      - host authentik pgweb all reject
+      - host all pgweb all scram-sha-256
       - host all all all reject
   resources:
     limits:

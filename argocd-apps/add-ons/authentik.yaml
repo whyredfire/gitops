@@ -32,6 +32,7 @@ spec:
               - blueprint-google-login
               - blueprint-grafana
               - blueprint-outpost
+              - blueprint-pgweb
               - blueprint-qbittorrent
               - blueprint-wireguard-admin
           server:

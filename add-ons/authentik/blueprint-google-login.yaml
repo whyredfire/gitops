@@ -1,0 +1,69 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: blueprint-google-login
+  namespace: authentik
+data:
+  google-login.yaml: |
+    version: 1
+    metadata:
+      name: Google login
+    entries:
+      - model: authentik_blueprints.metaapplyblueprint
+        attrs:
+          identifiers:
+            path: default/flow-default-source-authentication.yaml
+          required: true
+      - model: authentik_core.group
+        id: admins
+        identifiers:
+          name: admins
+        attrs:
+          is_superuser: true
+      - model: authentik_core.user
+        identifiers:
+          username: whyredfire
+        attrs:
+          email: whyredfire@gmail.com
+          groups:
+            - !KeyOf admins
+          name: Karan Parashar
+      - model: authentik_sources_oauth.oauthsource
+        id: google
+        identifiers:
+          slug: google
+        attrs:
+          authentication_flow: !Find [authentik_flows.flow, [slug, default-source-authentication]]
+          consumer_key: !Env GOOGLE_CLIENT_ID
+          consumer_secret: !Env GOOGLE_CLIENT_SECRET
+          name: Google
+          promoted: true
+          provider_type: google
+          user_matching_mode: email_link
+      - model: authentik_stages_identification.identificationstage
+        id: google-identification
+        identifiers:
+          name: google-identification
+        attrs:
+          sources:
+            - !KeyOf google
+          user_fields: []
+      - model: authentik_flows.flow
+        id: google-flow
+        identifiers:
+          slug: google-login
+        attrs:
+          authentication: require_unauthenticated
+          designation: authentication
+          name: Google login
+          title: Welcome!
+      - model: authentik_flows.flowstagebinding
+        identifiers:
+          order: 10
+          stage: !KeyOf google-identification
+          target: !KeyOf google-flow
+      - model: authentik_brands.brand
+        identifiers:
+          domain: authentik-default
+        attrs:
+          flow_authentication: !KeyOf google-flow

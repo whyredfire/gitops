@@ -1,0 +1,29 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: blueprint-outpost
+  namespace: authentik
+data:
+  outpost.yaml: |
+    version: 1
+    metadata:
+      name: Embedded outpost
+    entries:
+      - model: authentik_blueprints.metaapplyblueprint
+        attrs:
+          identifiers:
+            path: mounted/cm-blueprint-garage-ui/garage-ui.yaml
+          required: true
+      - model: authentik_blueprints.metaapplyblueprint
+        attrs:
+          identifiers:
+            path: mounted/cm-blueprint-qbittorrent/qbittorrent.yaml
+          required: true
+      # Serves forward auth for the apps behind the authentik middleware.
+      - model: authentik_outposts.outpost
+        identifiers:
+          managed: goauthentik.io/outposts/embedded
+        attrs:
+          providers:
+            - !Find [authentik_providers_proxy.proxyprovider, [name, garage-ui]]
+            - !Find [authentik_providers_proxy.proxyprovider, [name, qbittorrent]]

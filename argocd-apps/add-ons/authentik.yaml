@@ -27,7 +27,13 @@ spec:
                   name: authentik-secrets
           blueprints:
             configMaps:
-              - authentik-blueprints
+              - blueprint-argocd
+              - blueprint-garage-ui
+              - blueprint-google-login
+              - blueprint-grafana
+              - blueprint-outpost
+              - blueprint-qbittorrent
+              - blueprint-wireguard-admin
           server:
             resources:
               limits:

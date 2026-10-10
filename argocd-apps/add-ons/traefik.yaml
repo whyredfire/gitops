@@ -2,6 +2,7 @@ apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   annotations:
+    argocd.argoproj.io/client-side-apply-migration-manager: argocd-controller
     argocd.argoproj.io/sync-wave: "2"
   name: traefik
   namespace: argocd

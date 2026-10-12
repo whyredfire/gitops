@@ -124,7 +124,7 @@ spec:
                   path: /var/lib/alloy
                   type: DirectoryOrCreate
     repoURL: https://grafana.github.io/helm-charts
-    targetRevision: 1.13.0
+    targetRevision: 1.13.1
   syncPolicy:
     automated:
       prune: true

@@ -182,7 +182,7 @@ spec:
             testFramework:
               enabled: false
       repoURL: https://prometheus-community.github.io/helm-charts
-      targetRevision: 91.8.2
+      targetRevision: 92.3.0
     - path: add-ons/kube-prometheus-stack
       repoURL: https://gitea.whyredfire.dev/whyredfire/gitops.git
       targetRevision: main

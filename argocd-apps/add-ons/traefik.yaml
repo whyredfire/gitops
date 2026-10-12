@@ -62,7 +62,7 @@ spec:
                     name: wildcard-whyredfire-dpdns-org
                     group: ""
       repoURL: https://traefik.github.io/charts
-      targetRevision: 41.6.0
+      targetRevision: 41.7.1
     - path: add-ons/traefik
       repoURL: https://gitea.whyredfire.dev/whyredfire/gitops.git
       targetRevision: main

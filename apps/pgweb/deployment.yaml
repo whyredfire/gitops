@@ -28,7 +28,7 @@ spec:
                 secretKeyRef:
                   key: password
                   name: pgweb
-          image: docker.io/sosedoff/pgweb:0.17.0
+          image: ghcr.io/whyredfire/pgweb:sha-f718189
           livenessProbe:
             httpGet:
               path: /

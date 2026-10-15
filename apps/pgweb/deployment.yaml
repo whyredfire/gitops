@@ -28,7 +28,7 @@ spec:
                 secretKeyRef:
                   key: password
                   name: pgweb
-          image: ghcr.io/whyredfire/pgweb:sha-f718189
+          image: ghcr.io/whyredfire/pgweb:sha-2c734cc
           livenessProbe:
             httpGet:
               path: /

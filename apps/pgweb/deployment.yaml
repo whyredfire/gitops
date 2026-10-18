@@ -70,6 +70,4 @@ spec:
               - configMap:
                   name: pgweb-bookmark-grafana
               - configMap:
-                  name: pgweb-bookmark-legislative
-              - configMap:
                   name: pgweb-bookmark-redoost

@@ -6,7 +6,6 @@ resources:
   - garage.yaml
   - garage-ui.yaml
   - jellyfin.yaml
-  - legislative-summarization.yaml
   - pgweb.yaml
   - qbit.yaml
   - redoost.yaml

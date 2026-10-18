@@ -20,11 +20,6 @@ spec:
         passwordSecret:
           name: grafana-db
       - ensure: present
-        login: true
-        name: legislative
-        passwordSecret:
-          name: legislative-db
-      - ensure: present
         inRoles:
           - pg_read_all_data
         login: true

@@ -3,7 +3,6 @@ kind: Kustomization
 resources:
   - sealed-secret.yaml
   - bookmark-grafana.yaml
-  - bookmark-legislative.yaml
   - bookmark-redoost.yaml
   - deployment.yaml
   - service.yaml

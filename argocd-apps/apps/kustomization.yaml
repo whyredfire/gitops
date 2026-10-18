@@ -11,5 +11,4 @@ resources:
   - qbit.yaml
   - redoost.yaml
   - rustbin.yaml
-  - scriptscribe.yaml
   - wireguard.yaml

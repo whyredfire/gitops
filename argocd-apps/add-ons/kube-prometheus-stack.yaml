@@ -28,10 +28,7 @@ spec:
               cAdvisorMetricRelabelings:
                 - action: keep
                   sourceLabels: [__name__]
-                  regex: container_(cpu_usage_seconds_total|memory_working_set_bytes|fs_(reads|writes)_bytes_total|network_(receive|transmit)_bytes_total)
-                - action: drop
-                  sourceLabels: [__name__, interface]
-                  regex: container_network_.+;(br-|cni|docker|flannel|lo|tailscale|tun|veth|wg|wlan).*
+                  regex: container_(cpu_usage_seconds_total|memory_working_set_bytes)
                 - action: drop
                   sourceLabels: [id, pod]
                   regex: .+;
@@ -71,12 +68,26 @@ spec:
             serviceMonitor:
               selfMonitor: false
           prometheus-node-exporter:
-            # The first two are the chart's defaults, as lists are replaced.
+            # CPU, memory, disks, network and temperature.
             extraArgs:
+              - --collector.disable-defaults
+              - --collector.cpu
+              - --collector.meminfo
+              - --collector.filesystem
+              - --collector.netdev
+              - --collector.hwmon
+              - --web.disable-exporter-metrics
+              # The chart's defaults, as lists are replaced.
               - --collector.filesystem.mount-points-exclude=^/(dev|proc|sys|run/containerd/.+|var/lib/docker/.+|var/lib/kubelet/.+)($|/)
               - --collector.filesystem.fs-types-exclude=^(autofs|binfmt_misc|bpf|cgroup2?|configfs|debugfs|devpts|devtmpfs|fusectl|hugetlbfs|iso9660|mqueue|nsfs|overlay|proc|procfs|pstore|rpc_pipefs|securityfs|selinuxfs|squashfs|sysfs|tracefs|erofs)$
-              - --collector.netclass.ignored-devices=^(veth.*|br-.*|docker0|cni0|lo)$
               - --collector.netdev.device-exclude=^(veth.*|br-.*|docker0|cni0|lo)$
+            prometheus:
+              monitor:
+                # Collectors report more than these, like per-chip sensor labels.
+                metricRelabelings:
+                  - action: keep
+                    sourceLabels: [__name__]
+                    regex: node_(cpu_seconds_total|memory_(MemAvailable|MemTotal)_bytes|filesystem_(avail|size)_bytes|network_(receive|transmit)_bytes_total|hwmon_temp_celsius)
             resources:
               limits:
                 cpu: 200m

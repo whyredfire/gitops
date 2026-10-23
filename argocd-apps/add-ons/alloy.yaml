@@ -20,6 +20,9 @@ spec:
             content: |
               discovery.kubernetes "pods" {
                 role = "pod"
+                namespaces {
+                  names = ["garage", "postgres", "redoost", "traefik"]
+                }
                 selectors {
                   role  = "pod"
                   field = "spec.nodeName=" + sys.env("HOSTNAME")

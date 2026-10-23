@@ -1,9 +1,6 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
-  - dashboard-application-logs.yaml
-  - dashboard-http-requests.yaml
-  - dashboard-raspberry-pi.yaml
   - grafana-admin-sealedsecret.yaml
   - grafana-db-sealedsecret.yaml
   - grafana-oidc-sealedsecret.yaml

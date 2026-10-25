@@ -63,7 +63,7 @@ spec:
               value: https://auth.whyredfire.dev/application/o/wireguard-admin/
             - name: OAUTH_PROVIDERS
               value: oidc
-          image: ghcr.io/wg-easy/wg-easy:15.4.0
+          image: ghcr.io/wg-easy/wg-easy:15.5.0
           name: wg-easy
           ports:
             - containerPort: 27299
@@ -89,7 +89,7 @@ spec:
           command:
             - /bin/sh
             - -c
-          image: ghcr.io/wg-easy/wg-easy:15.4.0
+          image: ghcr.io/wg-easy/wg-easy:15.5.0
           name: firewall
           securityContext:
             capabilities:

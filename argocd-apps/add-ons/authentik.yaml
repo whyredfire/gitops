@@ -39,6 +39,7 @@ spec:
           server:
             resources:
               limits:
+                cpu: 1000m
                 memory: 1Gi
               requests:
                 cpu: 100m
@@ -46,6 +47,7 @@ spec:
           worker:
             resources:
               limits:
+                cpu: 1000m
                 memory: 1Gi
               requests:
                 cpu: 50m

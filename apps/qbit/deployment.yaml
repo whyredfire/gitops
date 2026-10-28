@@ -38,6 +38,13 @@ spec:
           ports:
             - containerPort: 8080
               name: http
+          resources:
+            limits:
+              cpu: 1000m
+              memory: 2Gi
+            requests:
+              cpu: 50m
+              memory: 128Mi
           volumeMounts:
             - mountPath: /config
               name: config
@@ -104,6 +111,13 @@ spec:
             periodSeconds: 30
             timeoutSeconds: 10
           name: gluetun
+          resources:
+            limits:
+              cpu: 500m
+              memory: 256Mi
+            requests:
+              cpu: 10m
+              memory: 96Mi
           restartPolicy: Always
           securityContext:
             capabilities:

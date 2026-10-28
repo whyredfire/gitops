@@ -37,3 +37,4 @@ patches:
       kind: ConfigMap
       name: argocd-cmd-params-cm
     path: argocd-cmd-params-cm-server-insecure-patch.yaml
+  - path: argocd-resources-patch.yaml

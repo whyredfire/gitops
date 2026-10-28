@@ -30,6 +30,13 @@ spec:
               enabled: true
               type: hostPath
               hostPath: /srv/media
+          resources:
+            limits:
+              cpu: 3000m
+              memory: 2Gi
+            requests:
+              cpu: 50m
+              memory: 512Mi
       repoURL: https://jellyfin.github.io/jellyfin-helm
       targetRevision: 3.2.0
     - path: apps/jellyfin

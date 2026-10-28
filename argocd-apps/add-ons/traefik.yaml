@@ -61,6 +61,13 @@ spec:
                   - kind: Secret
                     name: wildcard-whyredfire-dpdns-org
                     group: ""
+          resources:
+            limits:
+              cpu: 1000m
+              memory: 256Mi
+            requests:
+              cpu: 50m
+              memory: 64Mi
       repoURL: https://traefik.github.io/charts
       targetRevision: 41.7.1
     - path: add-ons/traefik

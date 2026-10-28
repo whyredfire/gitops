@@ -71,6 +71,13 @@ spec:
               protocol: UDP
             - containerPort: 51821
               name: http
+          resources:
+            limits:
+              cpu: 500m
+              memory: 512Mi
+            requests:
+              cpu: 10m
+              memory: 192Mi
           securityContext:
             capabilities:
               add:

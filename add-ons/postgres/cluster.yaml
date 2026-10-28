@@ -40,6 +40,7 @@ spec:
       - host all all all reject
   resources:
     limits:
+      cpu: 1000m
       memory: 1Gi
     requests:
       cpu: 100m

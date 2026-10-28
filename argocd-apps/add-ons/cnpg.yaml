@@ -18,6 +18,13 @@ spec:
         replicaCount: 1
         config:
           clusterWide: true
+        resources:
+          limits:
+            cpu: 500m
+            memory: 256Mi
+          requests:
+            cpu: 10m
+            memory: 64Mi
     repoURL: https://cloudnative-pg.github.io/charts
     targetRevision: 0.29.1
   syncPolicy:

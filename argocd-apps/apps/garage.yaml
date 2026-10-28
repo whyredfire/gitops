@@ -78,6 +78,7 @@ spec:
               cpu: 100m
               memory: 256Mi
             limits:
+              cpu: 1000m
               memory: 1Gi
     - path: apps/garage
       repoURL: https://gitea.whyredfire.dev/whyredfire/gitops.git

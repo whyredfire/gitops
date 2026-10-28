@@ -30,6 +30,28 @@ spec:
               enabled: true
               type: hostPath
               hostPath: /srv/media
+          # Metadata, artwork, and subtitles come from the internet; the
+          # cluster and the LAN stay off limits
+          networkPolicy:
+            enabled: true
+            ingress:
+              allowExternal: false
+              namespaceSelector:
+                matchLabels:
+                  kubernetes.io/metadata.name: traefik
+            egress:
+              allowAllEgress: false
+              restrictedEgress:
+                allowMetadata: false
+                allowInCluster: false
+              customRules:
+                - to:
+                    - ipBlock:
+                        cidr: 0.0.0.0/0
+                        except:
+                          - 10.0.0.0/8
+                          - 172.16.0.0/12
+                          - 192.168.0.0/16
           resources:
             limits:
               cpu: 3000m

@@ -12,3 +12,4 @@ resources:
   - blueprint-wireguard-admin.yaml
   - httproute.yaml
   - referencegrant.yaml
+  - networkpolicy.yaml

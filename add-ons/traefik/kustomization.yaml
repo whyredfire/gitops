@@ -3,3 +3,4 @@ kind: Kustomization
 resources:
   - wildcard-whyredfire-dev.yaml
   - wildcard-whyredfire-dpdns-org.yaml
+  - networkpolicy.yaml

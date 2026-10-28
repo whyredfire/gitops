@@ -4,3 +4,4 @@ resources:
   - sealed-secret.yaml
   - middleware.yaml
   - httproute.yaml
+  - networkpolicy.yaml

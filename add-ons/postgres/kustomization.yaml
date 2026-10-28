@@ -9,3 +9,4 @@ resources:
   - pgweb-db-sealedsecret.yaml
   - redoost-db-sealedsecret.yaml
   - redoost-database.yaml
+  - networkpolicy.yaml

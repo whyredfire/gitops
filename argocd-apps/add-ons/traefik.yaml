@@ -15,6 +15,9 @@ spec:
     - chart: traefik
       helm:
         values: |
+          # The network policy allows no internet egress
+          global:
+            checkNewVersion: false
           # Query strings are dropped, as OAuth callbacks carry codes.
           accessLog:
             enabled: true

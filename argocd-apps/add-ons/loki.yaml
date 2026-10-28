@@ -15,6 +15,15 @@ spec:
     - chart: loki
       helm:
         values: |
+          # Garage on 3900; the rules sidecar watches the API, which only the
+          # discovery port can allow
+          networkPolicy:
+            enabled: true
+            externalStorage:
+              ports:
+                - 3900
+            discovery:
+              port: 6443
           loki:
             auth_enabled: false
             commonConfig:

@@ -11,22 +11,25 @@ spec:
     namespace: cnpg-system
     server: https://kubernetes.default.svc
   project: default
-  source:
-    chart: cloudnative-pg
-    helm:
-      values: |
-        replicaCount: 1
-        config:
-          clusterWide: true
-        resources:
-          limits:
-            cpu: 500m
-            memory: 256Mi
-          requests:
-            cpu: 10m
-            memory: 64Mi
-    repoURL: https://cloudnative-pg.github.io/charts
-    targetRevision: 0.29.1
+  sources:
+    - chart: cloudnative-pg
+      helm:
+        values: |
+          replicaCount: 1
+          config:
+            clusterWide: true
+          resources:
+            limits:
+              cpu: 500m
+              memory: 256Mi
+            requests:
+              cpu: 10m
+              memory: 64Mi
+      repoURL: https://cloudnative-pg.github.io/charts
+      targetRevision: 0.29.1
+    - path: add-ons/cnpg
+      repoURL: https://gitea.whyredfire.dev/whyredfire/gitops.git
+      targetRevision: main
   syncPolicy:
     automated:
       prune: true

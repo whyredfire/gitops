@@ -47,6 +47,9 @@ spec:
           kubeStateMetrics:
             enabled: false
           prometheusOperator:
+            # The chart's policy only limits ingress to the webhook; egress stays open
+            networkPolicy:
+              enabled: true
             admissionWebhooks:
               certManager:
                 enabled: true
@@ -96,6 +99,38 @@ spec:
                 cpu: 20m
                 memory: 32Mi
           prometheus:
+            # Only Grafana queries it; it scrapes the kubelet and node-exporter on the
+            # node, matched by port so no node IP is needed
+            networkPolicy:
+              enabled: true
+              ingress:
+                - from:
+                    - podSelector:
+                        matchLabels:
+                          app.kubernetes.io/name: grafana
+                  ports:
+                    - port: 9090
+                      protocol: TCP
+              egress:
+                - ports:
+                    - port: 53
+                      protocol: UDP
+                    - port: 53
+                      protocol: TCP
+                  to:
+                    - namespaceSelector:
+                        matchLabels:
+                          kubernetes.io/metadata.name: kube-system
+                      podSelector:
+                        matchLabels:
+                          k8s-app: kube-dns
+                - ports:
+                    - port: 6443
+                      protocol: TCP
+                    - port: 9100
+                      protocol: TCP
+                    - port: 10250
+                      protocol: TCP
             serviceMonitor:
               selfMonitor: false
             prometheusSpec:
@@ -124,6 +159,27 @@ spec:
                       requests:
                         storage: 50Gi
           grafana:
+            # The chart takes one list of egress ports for every destination: OIDC
+            # on 443, Loki, Postgres, the API for the sidecars, and Prometheus
+            networkPolicy:
+              enabled: true
+              allowExternal: false
+              explicitNamespacesSelector:
+                matchLabels:
+                  kubernetes.io/metadata.name: traefik
+              egress:
+                enabled: true
+                ports:
+                  - port: 443
+                    protocol: TCP
+                  - port: 3100
+                    protocol: TCP
+                  - port: 5432
+                    protocol: TCP
+                  - port: 6443
+                    protocol: TCP
+                  - port: 9090
+                    protocol: TCP
             admin:
               existingSecret: grafana-admin
             additionalDataSources:

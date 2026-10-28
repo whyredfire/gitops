@@ -29,7 +29,18 @@ spec:
             requests:
               cpu: 10m
               memory: 64Mi
+          # The chart's egress fits the controller: ACME and Cloudflare on 443,
+          # DNS-01 propagation checks on 53, and the API on 6443
+          networkPolicy:
+            enabled: true
           cainjector:
+            # Only talks to the API
+            networkPolicy:
+              enabled: true
+              egress:
+                - ports:
+                    - port: 6443
+                      protocol: TCP
             resources:
               limits:
                 cpu: 200m
@@ -38,6 +49,13 @@ spec:
                 cpu: 10m
                 memory: 64Mi
           webhook:
+            # Only talks to the API
+            networkPolicy:
+              enabled: true
+              egress:
+                - ports:
+                    - port: 6443
+                      protocol: TCP
             resources:
               limits:
                 cpu: 200m

@@ -4,3 +4,4 @@ resources:
   - sealed-secret.yaml
   - database-sealedsecret.yaml
   - auth-sealedsecret.yaml
+  - middleware.yaml

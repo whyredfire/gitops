@@ -28,6 +28,12 @@ spec:
                   name: traefik-gateway
                   namespace: traefik
                   sectionName: websecure
+              filters:
+                - type: ExtensionRef
+                  extensionRef:
+                    group: traefik.io
+                    kind: Middleware
+                    name: compress
             sites:
               parentRefs:
                 - kind: Gateway

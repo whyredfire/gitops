@@ -3,6 +3,7 @@ kind: Kustomization
 resources:
   - alloy.yaml
   - argocd-dashboard.yaml
+  - argocd-image-updater.yaml
   - authentik.yaml
   - cert-manager.yaml
   - cnpg.yaml

@@ -24,6 +24,9 @@ spec:
             requests:
               cpu: 10m
               memory: 64Mi
+    - path: add-ons/argocd-image-updater
+      repoURL: https://gitea.whyredfire.dev/whyredfire/gitops.git
+      targetRevision: main
   syncPolicy:
     automated:
       prune: true

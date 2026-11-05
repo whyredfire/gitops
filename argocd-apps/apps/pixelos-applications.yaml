@@ -1,0 +1,24 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  annotations:
+    argocd.argoproj.io/client-side-apply-migration-manager: argocd-controller
+    argocd.argoproj.io/sync-wave: "3"
+  name: pixelos-applications
+  namespace: argocd
+spec:
+  destination:
+    namespace: pixelos
+    server: https://kubernetes.default.svc
+  project: default
+  source:
+    path: k8s
+    repoURL: git@github.com:PixelOS-CI/applications.git
+    targetRevision: main
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - ServerSideApply=true

@@ -64,6 +64,17 @@ spec:
                   - kind: Secret
                     name: wildcard-whyredfire-dpdns-org
                     group: ""
+              websecure-pixelos:
+                port: 8443
+                protocol: HTTPS
+                mode: Terminate
+                hostname: "*.pixelos.net"
+                namespacePolicy:
+                  from: All
+                certificateRefs:
+                  - kind: Secret
+                    name: wildcard-pixelos-net
+                    group: ""
           resources:
             limits:
               cpu: 1000m

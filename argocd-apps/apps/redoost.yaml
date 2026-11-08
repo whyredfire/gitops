@@ -18,6 +18,12 @@ spec:
       helm:
         values: |
           appOrigin: https://redoost.whyredfire.dev
+          api:
+            image:
+              tag: latest
+          frontend:
+            image:
+              tag: latest
           sitesOrigin: https://whyredfire.dpdns.org
           httpRoute:
             annotations:

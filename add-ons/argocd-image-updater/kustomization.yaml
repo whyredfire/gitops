@@ -3,3 +3,4 @@ kind: Kustomization
 resources:
   - ghcr-sealedsecret.yaml
   - pixelos-applications.yaml
+  - redoost.yaml

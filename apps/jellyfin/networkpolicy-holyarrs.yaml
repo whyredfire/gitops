@@ -1,0 +1,22 @@
+# Lets HolyArrs ask Jellyfin to rescan after imports and sign people in.
+# Adds to the chart's policy, which only admits traefik.
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: jellyfin-from-holyarrs
+  namespace: jellyfin
+spec:
+  ingress:
+    - from:
+        - podSelector:
+            matchLabels:
+              app.kubernetes.io/name: holyarrs
+      ports:
+        - port: 8096
+          protocol: TCP
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: jellyfin
+      app.kubernetes.io/instance: jellyfin
+  policyTypes:
+    - Ingress

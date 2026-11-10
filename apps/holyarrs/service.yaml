@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: holyarrs
+  namespace: jellyfin
+spec:
+  ports:
+    - name: http
+      port: 6262
+      targetPort: http
+  selector:
+    app.kubernetes.io/name: holyarrs

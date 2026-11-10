@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: qbittorrent
-  namespace: qbit
+  namespace: jellyfin
 spec:
   replicas: 1
   selector:
@@ -50,6 +50,55 @@ spec:
               name: config
             - mountPath: /downloads
               name: downloads
+        # Shares the pod's VPN, so both sites are reached through it
+        - env:
+            - name: PUID
+              value: "1000"
+            - name: PGID
+              value: "1000"
+            - name: TZ
+              value: Etc/UTC
+            - name: AUTO_UPDATE
+              value: "false"
+          image: lscr.io/linuxserver/jackett:v0.24.3042-ls32@sha256:4449c813592f6169dbb38bf0e966775e618905a267cd46538901060c6bb978d1
+          livenessProbe:
+            initialDelaySeconds: 60
+            periodSeconds: 30
+            tcpSocket:
+              port: jackett
+            timeoutSeconds: 5
+          name: jackett
+          ports:
+            - containerPort: 9117
+              name: jackett
+          resources:
+            limits:
+              cpu: 500m
+              memory: 512Mi
+            requests:
+              cpu: 20m
+              memory: 128Mi
+          volumeMounts:
+            - mountPath: /config
+              name: jackett-config
+        # Only reachable on localhost: not in the firewall or network policy
+        - env:
+            - name: LOG_LEVEL
+              value: info
+            - name: TZ
+              value: Etc/UTC
+          image: ghcr.io/flaresolverr/flaresolverr:v3.5.2@sha256:c80ae007ce2ccdcd217a12426e4f039ef763ff90738c808d38810c3e59323767
+          name: flaresolverr
+          ports:
+            - containerPort: 8191
+              name: flaresolverr
+          resources:
+            limits:
+              cpu: 1000m
+              memory: 1Gi
+            requests:
+              cpu: 10m
+              memory: 192Mi
       dnsConfig:
         nameservers:
           - 127.0.0.1
@@ -97,7 +146,7 @@ spec:
             - name: WIREGUARD_PERSISTENT_KEEPALIVE_INTERVAL
               value: 25s
             - name: FIREWALL_INPUT_PORTS
-              value: "8080"
+              value: "8080,9117"
             - name: HEALTH_VPN_DURATION_INITIAL
               value: 30s
             - name: TZ
@@ -138,3 +187,6 @@ spec:
         - hostPath:
             path: /srv/media
           name: downloads
+        - name: jackett-config
+          persistentVolumeClaim:
+            claimName: jackett-config

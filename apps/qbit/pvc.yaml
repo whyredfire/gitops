@@ -2,7 +2,22 @@ apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: qbit-config-pvc
-  namespace: qbit
+  namespace: jellyfin
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 500Mi
+  storageClassName: local-path
+  # Existing volume, carried over from the qbit namespace
+  volumeName: pvc-ee5a6ff9-7a40-4be2-9f17-02877fd3319c
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: jackett-config
+  namespace: jellyfin
 spec:
   accessModes:
     - ReadWriteOnce

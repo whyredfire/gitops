@@ -13,7 +13,7 @@ spec:
       namespace: pgweb
     - group: gateway.networking.k8s.io
       kind: HTTPRoute
-      namespace: qbit
+      namespace: jellyfin
   to:
     - group: ""
       kind: Service

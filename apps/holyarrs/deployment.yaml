@@ -1,0 +1,74 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: holyarrs
+  namespace: jellyfin
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: holyarrs
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: holyarrs
+    spec:
+      containers:
+        - env:
+            - name: TZ
+              value: Etc/UTC
+            - name: HOLYARRS_ALLOWED_HOSTS
+              value: holyarrs.whyredfire.dev
+            # Traefik's pods
+            - name: HOLYARRS_TRUSTED_PROXIES
+              value: 10.42.0.0/16
+          image: holyarrs/holyarrs:1.0.9@sha256:3d941aa8a78d4474cc016a0d994b2531aa8692015aaad487cbdee136e8dd4226
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: http
+            initialDelaySeconds: 10
+            periodSeconds: 30
+          name: holyarrs
+          ports:
+            - containerPort: 6262
+              name: http
+          readinessProbe:
+            httpGet:
+              path: /healthz
+              port: http
+          resources:
+            limits:
+              cpu: 1000m
+              memory: 1Gi
+            requests:
+              cpu: 50m
+              memory: 192Mi
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
+          volumeMounts:
+            - mountPath: /config
+              name: config
+            # Same path as Jellyfin; one mount so imports hardlink instead of copy
+            - mountPath: /media
+              name: media
+      # Owner of /srv/media, same as qBittorrent
+      securityContext:
+        fsGroup: 1000
+        runAsGroup: 1000
+        runAsNonRoot: true
+        runAsUser: 1000
+        seccompProfile:
+          type: RuntimeDefault
+      volumes:
+        - name: config
+          persistentVolumeClaim:
+            claimName: holyarrs-config
+        - hostPath:
+            path: /srv/media
+          name: media

@@ -4,7 +4,7 @@ metadata:
   annotations:
     argocd.argoproj.io/sync-wave: "2"
   name: qbittorrent
-  namespace: qbit
+  namespace: jellyfin
 spec:
   hostnames:
     - qbit.whyredfire.dev

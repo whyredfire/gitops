@@ -8,7 +8,7 @@ metadata:
   namespace: argocd
 spec:
   destination:
-    namespace: qbit
+    namespace: jellyfin
     server: https://kubernetes.default.svc
   project: default
   source:

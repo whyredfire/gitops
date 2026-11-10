@@ -6,6 +6,7 @@ resources:
   - betterslcm.yaml
   - garage.yaml
   - garage-ui.yaml
+  - holyarrs.yaml
   - jellyfin.yaml
   - pgweb.yaml
   - pixelos-applications.yaml

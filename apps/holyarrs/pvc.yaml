@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: holyarrs-config
+  namespace: jellyfin
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+  storageClassName: local-path
+  # Existing volume, carried over from the holyarrs namespace
+  volumeName: pvc-3c3e6f37-b3bf-457b-9ef6-bff62b02641e

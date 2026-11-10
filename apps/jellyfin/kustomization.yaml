@@ -3,3 +3,4 @@ kind: Kustomization
 resources:
   - httproute-local.yaml
   - httproute.yaml
+  - networkpolicy-holyarrs.yaml

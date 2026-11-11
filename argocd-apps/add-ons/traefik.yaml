@@ -83,7 +83,7 @@ spec:
               cpu: 50m
               memory: 64Mi
       repoURL: https://traefik.github.io/charts
-      targetRevision: 41.7.1
+      targetRevision: 42.3.2
     - path: add-ons/traefik
       repoURL: https://gitea.whyredfire.dev/whyredfire/gitops.git
       targetRevision: main

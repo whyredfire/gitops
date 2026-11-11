@@ -1,0 +1,41 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": ["config:recommended"],
+  "argocd": {
+    "managerFilePatterns": ["/^argocd-apps/.+\\.yaml$/"]
+  },
+  "kubernetes": {
+    "managerFilePatterns": ["/^(apps|add-ons)/.+\\.yaml$/"]
+  },
+  "customManagers": [
+    {
+      "customType": "regex",
+      "managerFilePatterns": ["/^bootstrap/kustomization\\.yaml$/"],
+      "matchStrings": [
+        "raw\\.githubusercontent\\.com/(?<depName>argoproj/argo-cd)/(?<currentValue>v[\\d.]+)/manifests/install\\.yaml"
+      ],
+      "datasourceTemplate": "github-releases"
+    },
+    {
+      "customType": "regex",
+      "managerFilePatterns": ["/^add-ons/postgres/cluster\\.yaml$/"],
+      "matchStrings": ["imageName: (?<depName>[^:\\s]+):(?<currentValue>\\S+)"],
+      "datasourceTemplate": "docker"
+    }
+  ],
+  "packageRules": [
+    {
+      "description": "Built from commits and rolled out by hand or by Image Updater",
+      "matchPackageNames": ["ghcr.io/whyredfire/**"],
+      "enabled": false
+    },
+    {
+      "matchPackageNames": ["lscr.io/linuxserver/qbittorrent"],
+      "versioning": "regex:^(?<major>\\d+)\\.(?<minor>\\d+)\\.(?<patch>\\d+)_v[\\d.]+-ls(?<build>\\d+)$"
+    },
+    {
+      "matchPackageNames": ["lscr.io/linuxserver/jackett"],
+      "versioning": "regex:^v(?<major>\\d+)\\.(?<minor>\\d+)\\.(?<patch>\\d+)-ls(?<build>\\d+)$"
+    }
+  ]
+}

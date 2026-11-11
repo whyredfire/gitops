@@ -14,9 +14,13 @@ spec:
     - group: ""
       kind: PersistentVolumeClaim
     - group: ""
+      kind: Pod
+    - group: ""
       kind: Service
     - group: apps
       kind: Deployment
+    - group: apps
+      kind: ReplicaSet
     - group: bitnami.com
       kind: SealedSecret
     - group: gateway.networking.k8s.io

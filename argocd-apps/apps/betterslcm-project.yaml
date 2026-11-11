@@ -10,9 +10,13 @@ spec:
       server: https://kubernetes.default.svc
   namespaceResourceWhitelist:
     - group: ""
+      kind: Pod
+    - group: ""
       kind: Service
     - group: apps
       kind: Deployment
+    - group: apps
+      kind: ReplicaSet
     - group: gateway.networking.k8s.io
       kind: HTTPRoute
     - group: networking.k8s.io

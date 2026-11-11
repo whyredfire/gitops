@@ -12,9 +12,13 @@ spec:
     - group: ""
       kind: ConfigMap
     - group: ""
+      kind: Pod
+    - group: ""
       kind: Service
     - group: apps
       kind: Deployment
+    - group: apps
+      kind: ReplicaSet
     - group: batch
       kind: CronJob
     - group: batch

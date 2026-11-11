@@ -2,6 +2,15 @@
 
 Argo CD manifests for a single-node k3s cluster.
 
+## Bootstrap
+
+Argo CD is installed by hand once and manages itself from then on:
+
+```sh
+kubectl apply --server-side -k bootstrap
+kubectl apply -k bootstrap/argocd-root-app
+```
+
 ## Node configuration
 
 These live on the node, not in this repo, so reapply them when rebuilding it.

@@ -7,6 +7,13 @@ spec:
   destination:
     namespace: argocd
     server: https://kubernetes.default.svc
+  # Image Updater pins digests on the live Applications
+  ignoreDifferences:
+    - group: argoproj.io
+      jqPathExpressions:
+        - .spec.sources[]?.helm.parameters
+        - .spec.source.kustomize.images
+      kind: Application
   project: default
   source:
     path: argocd-apps
@@ -16,3 +23,5 @@ spec:
     automated:
       prune: true
       selfHeal: true
+    syncOptions:
+      - ApplyOutOfSyncOnly=true

@@ -10,7 +10,7 @@ spec:
   destination:
     namespace: betterslcm
     server: https://kubernetes.default.svc
-  project: default
+  project: betterslcm
   source:
     path: k8s
     repoURL: https://github.com/DK10WS/SLCM_APP.git
@@ -20,5 +20,4 @@ spec:
       prune: true
       selfHeal: true
     syncOptions:
-      - CreateNamespace=true
       - ServerSideApply=true

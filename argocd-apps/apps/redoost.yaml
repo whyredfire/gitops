@@ -10,7 +10,7 @@ spec:
   destination:
     namespace: redoost
     server: https://kubernetes.default.svc
-  project: default
+  project: redoost
   sources:
     - repoURL: https://github.com/whyredfire/redoost.git
       targetRevision: main
@@ -88,5 +88,4 @@ spec:
       prune: true
       selfHeal: true
     syncOptions:
-      - CreateNamespace=true
       - ServerSideApply=true

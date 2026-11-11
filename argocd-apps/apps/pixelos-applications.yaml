@@ -10,7 +10,7 @@ spec:
   destination:
     namespace: pixelos
     server: https://kubernetes.default.svc
-  project: default
+  project: pixelos
   source:
     path: k8s
     repoURL: git@github.com:PixelOS-CI/applications.git
@@ -20,5 +20,4 @@ spec:
       prune: true
       selfHeal: true
     syncOptions:
-      - CreateNamespace=true
       - ServerSideApply=true

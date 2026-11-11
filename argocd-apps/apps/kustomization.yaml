@@ -3,6 +3,8 @@ kind: Kustomization
 resources:
   - applications-repo-sealedsecret.yaml
   - bentopdf.yaml
+  - betterslcm-namespace.yaml
+  - betterslcm-project.yaml
   - betterslcm.yaml
   - garage.yaml
   - garage-ui.yaml
@@ -10,7 +12,11 @@ resources:
   - jellyfin.yaml
   - pgweb.yaml
   - pixelos-applications.yaml
+  - pixelos-namespace.yaml
+  - pixelos-project.yaml
   - qbit.yaml
+  - redoost-namespace.yaml
+  - redoost-project.yaml
   - redoost.yaml
   - rustbin.yaml
   - wireguard.yaml

@@ -1,0 +1,21 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: betterslcm
+  namespace: argocd
+spec:
+  description: Manifests from an external repo, confined to their own namespace
+  destinations:
+    - namespace: betterslcm
+      server: https://kubernetes.default.svc
+  namespaceResourceWhitelist:
+    - group: ""
+      kind: Service
+    - group: apps
+      kind: Deployment
+    - group: gateway.networking.k8s.io
+      kind: HTTPRoute
+    - group: networking.k8s.io
+      kind: NetworkPolicy
+  sourceRepos:
+    - https://github.com/DK10WS/SLCM_APP.git

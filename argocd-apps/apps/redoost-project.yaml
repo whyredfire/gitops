@@ -1,0 +1,32 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: redoost
+  namespace: argocd
+spec:
+  description: Manifests from an external repo, confined to their own namespace
+  destinations:
+    - namespace: redoost
+      server: https://kubernetes.default.svc
+  namespaceResourceWhitelist:
+    - group: ""
+      kind: ConfigMap
+    - group: ""
+      kind: Service
+    - group: apps
+      kind: Deployment
+    - group: batch
+      kind: CronJob
+    - group: batch
+      kind: Job
+    - group: bitnami.com
+      kind: SealedSecret
+    - group: gateway.networking.k8s.io
+      kind: HTTPRoute
+    - group: networking.k8s.io
+      kind: NetworkPolicy
+    - group: traefik.io
+      kind: Middleware
+  sourceRepos:
+    - https://gitea.whyredfire.dev/whyredfire/gitops.git
+    - https://github.com/whyredfire/redoost.git

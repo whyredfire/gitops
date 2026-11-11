@@ -1,0 +1,27 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: pixelos
+  namespace: argocd
+spec:
+  description: Manifests from an external repo, confined to their own namespace
+  destinations:
+    - namespace: pixelos
+      server: https://kubernetes.default.svc
+  namespaceResourceWhitelist:
+    - group: ""
+      kind: ConfigMap
+    - group: ""
+      kind: PersistentVolumeClaim
+    - group: ""
+      kind: Service
+    - group: apps
+      kind: Deployment
+    - group: bitnami.com
+      kind: SealedSecret
+    - group: gateway.networking.k8s.io
+      kind: HTTPRoute
+    - group: networking.k8s.io
+      kind: NetworkPolicy
+  sourceRepos:
+    - git@github.com:PixelOS-CI/applications.git

@@ -23,9 +23,9 @@ data:
             - refresh_token
           redirect_uris:
             - matching_mode: strict
-              url: https://argo.whyredfire.dev/auth/callback
+              url: https://argocd.whyredfire.dev/auth/callback
             - matching_mode: strict
-              url: https://argo.whyredfire.dev/pkce/verify
+              url: https://argocd.whyredfire.dev/pkce/verify
             - matching_mode: strict
               url: http://localhost:8085/auth/callback
             - matching_mode: strict
@@ -42,7 +42,7 @@ data:
         attrs:
           name: ArgoCD
           provider: !KeyOf argocd-provider
-          meta_launch_url: https://argo.whyredfire.dev
+          meta_launch_url: https://argocd.whyredfire.dev
       - model: authentik_policies.policybinding
         identifiers:
           order: 0

@@ -64,7 +64,7 @@ spec:
                 cpu: 10m
                 memory: 32Mi
       repoURL: https://charts.jetstack.io
-      targetRevision: v1.21.2
+      targetRevision: v1.21.3
     - path: add-ons/cert-manager
       repoURL: https://gitea.whyredfire.dev/whyredfire/gitops.git
       targetRevision: main

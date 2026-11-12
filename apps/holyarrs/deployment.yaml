@@ -24,7 +24,7 @@ spec:
             # Traefik's pods
             - name: HOLYARRS_TRUSTED_PROXIES
               value: 10.42.0.0/16
-          image: holyarrs/holyarrs:1.0.19@sha256:0d82787b6bd274bd19b31adee9689f90e55d4c46a8194594deecfe02882d963d
+          image: holyarrs/holyarrs:1.1.0@sha256:fa7c99b7b2d6e860215d01bb6b0f31b1659b5841be02e81a169d856704614590
           livenessProbe:
             httpGet:
               path: /healthz

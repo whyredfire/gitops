@@ -14,7 +14,7 @@ spec:
         app.kubernetes.io/name: bentopdf
     spec:
       containers:
-        - image: ghcr.io/alam00000/bentopdf-simple:latest@sha256:3bbab98791694b77bc70ab03bf1b2ea89e568a75ef172c27d95cbdbdf810038f
+        - image: ghcr.io/alam00000/bentopdf-simple:latest@sha256:f96da8c4a347880b891d66aa2ebfa6b63f76277dafcfcdfa40c8e6b92c59ef44
           livenessProbe:
             httpGet:
               path: /

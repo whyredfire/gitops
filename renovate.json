@@ -25,6 +25,10 @@
   ],
   "packageRules": [
     {
+      "description": "One PR for all minor/patch/digest updates; majors stay separate",
+      "extends": ["group:allNonMajor"]
+    },
+    {
       "description": "Built from commits and rolled out by hand or by Image Updater",
       "matchPackageNames": ["ghcr.io/whyredfire/**"],
       "enabled": false

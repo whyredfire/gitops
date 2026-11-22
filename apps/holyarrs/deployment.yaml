@@ -57,6 +57,7 @@ spec:
             # Same path as Jellyfin; one mount so imports hardlink instead of copy
             - mountPath: /media
               name: media
+      enableServiceLinks: false
       # Owner of /srv/media, same as qBittorrent
       securityContext:
         fsGroup: 1000

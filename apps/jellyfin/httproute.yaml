@@ -8,6 +8,7 @@ metadata:
 spec:
   hostnames:
     - jellyfin.whyredfire.dev
+    - jellyfin-local.whyredfire.dev
   parentRefs:
     - kind: Gateway
       name: traefik-gateway

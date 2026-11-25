@@ -32,5 +32,5 @@ spec:
     - group: traefik.io
       kind: Middleware
   sourceRepos:
-    - https://gitea.whyredfire.dev/whyredfire/gitops.git
+    - https://github.com/whyredfire/gitops.git
     - https://github.com/whyredfire/redoost.git

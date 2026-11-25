@@ -28,7 +28,7 @@ spec:
       repoURL: https://cloudnative-pg.github.io/charts
       targetRevision: 0.29.2
     - path: add-ons/cnpg
-      repoURL: https://gitea.whyredfire.dev/whyredfire/gitops.git
+      repoURL: https://github.com/whyredfire/gitops.git
       targetRevision: main
   syncPolicy:
     automated:

@@ -12,7 +12,7 @@ spec:
   project: default
   source:
     path: bootstrap
-    repoURL: https://gitea.whyredfire.dev/whyredfire/gitops.git
+    repoURL: https://github.com/whyredfire/gitops.git
     targetRevision: main
   syncPolicy:
     automated:

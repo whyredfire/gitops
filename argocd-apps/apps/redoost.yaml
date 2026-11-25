@@ -81,7 +81,7 @@ spec:
                   matchLabels:
                     cnpg.io/cluster: postgres
     - path: apps/redoost
-      repoURL: https://gitea.whyredfire.dev/whyredfire/gitops.git
+      repoURL: https://github.com/whyredfire/gitops.git
       targetRevision: main
   syncPolicy:
     automated:

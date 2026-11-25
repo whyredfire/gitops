@@ -62,7 +62,7 @@ spec:
       repoURL: https://jellyfin.github.io/jellyfin-helm
       targetRevision: 3.7.0
     - path: apps/jellyfin
-      repoURL: https://gitea.whyredfire.dev/whyredfire/gitops.git
+      repoURL: https://github.com/whyredfire/gitops.git
       targetRevision: main
   syncPolicy:
     automated:

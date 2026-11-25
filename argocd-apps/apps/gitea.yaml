@@ -74,7 +74,7 @@ spec:
       repoURL: https://dl.gitea.com/charts/
       targetRevision: 12.7.0
     - path: apps/gitea
-      repoURL: https://gitea.whyredfire.dev/whyredfire/gitops.git
+      repoURL: https://github.com/whyredfire/gitops.git
       targetRevision: main
   syncPolicy:
     automated:

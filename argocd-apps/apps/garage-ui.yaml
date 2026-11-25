@@ -34,7 +34,7 @@ spec:
             cors:
               enabled: false
     - path: apps/garage-ui
-      repoURL: https://gitea.whyredfire.dev/whyredfire/gitops.git
+      repoURL: https://github.com/whyredfire/gitops.git
       targetRevision: main
   syncPolicy:
     automated:

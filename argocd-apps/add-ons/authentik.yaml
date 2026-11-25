@@ -54,7 +54,7 @@ spec:
       repoURL: https://charts.goauthentik.io
       targetRevision: 2026.8.6
     - path: add-ons/authentik
-      repoURL: https://gitea.whyredfire.dev/whyredfire/gitops.git
+      repoURL: https://github.com/whyredfire/gitops.git
       targetRevision: main
   syncPolicy:
     automated:

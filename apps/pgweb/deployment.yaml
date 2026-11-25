@@ -68,6 +68,4 @@ spec:
           projected:
             sources:
               - configMap:
-                  name: pgweb-bookmark-grafana
-              - configMap:
                   name: pgweb-bookmark-redoost

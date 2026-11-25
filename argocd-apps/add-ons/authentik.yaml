@@ -31,7 +31,6 @@ spec:
               - blueprint-argocd
               - blueprint-garage-ui
               - blueprint-google-login
-              - blueprint-grafana
               - blueprint-outpost
               - blueprint-pgweb
               - blueprint-qbittorrent

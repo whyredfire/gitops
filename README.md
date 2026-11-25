@@ -18,20 +18,13 @@ These live on the node, not in this repo, so reapply them when rebuilding it.
 ### k3s
 
 The bundled Traefik is replaced by the Argo CD-managed one, which is exposed
-via `externalIPs` rather than ServiceLB. Control-plane metrics endpoints are
-exposed for Prometheus:
+via `externalIPs` rather than ServiceLB:
 
 ```yaml
 # /etc/rancher/k3s/config.yaml
 disable:
   - traefik
   - servicelb
-kube-controller-manager-arg:
-  - bind-address=0.0.0.0
-kube-scheduler-arg:
-  - bind-address=0.0.0.0
-kube-proxy-arg:
-  - metrics-bind-address=0.0.0.0
 ```
 
 ### Image garbage collection

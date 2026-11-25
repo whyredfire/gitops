@@ -15,11 +15,6 @@ spec:
         passwordSecret:
           name: authentik-db
       - ensure: present
-        login: true
-        name: grafana
-        passwordSecret:
-          name: grafana-db
-      - ensure: present
         inRoles:
           - pg_read_all_data
         login: true

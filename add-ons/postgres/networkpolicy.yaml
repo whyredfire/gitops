@@ -48,12 +48,6 @@ spec:
               app.kubernetes.io/name: authentik
         - namespaceSelector:
             matchLabels:
-              kubernetes.io/metadata.name: monitoring
-          podSelector:
-            matchLabels:
-              app.kubernetes.io/name: grafana
-        - namespaceSelector:
-            matchLabels:
               kubernetes.io/metadata.name: pgweb
           podSelector:
             matchLabels:

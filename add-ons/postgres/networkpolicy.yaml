@@ -48,6 +48,12 @@ spec:
               app.kubernetes.io/name: authentik
         - namespaceSelector:
             matchLabels:
+              kubernetes.io/metadata.name: gitea
+          podSelector:
+            matchLabels:
+              app.kubernetes.io/name: gitea
+        - namespaceSelector:
+            matchLabels:
               kubernetes.io/metadata.name: pgweb
           podSelector:
             matchLabels:

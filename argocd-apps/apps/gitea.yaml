@@ -1,0 +1,85 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  annotations:
+    argocd.argoproj.io/client-side-apply-migration-manager: argocd-controller
+    argocd.argoproj.io/sync-wave: "3"
+  name: gitea
+  namespace: argocd
+spec:
+  destination:
+    namespace: gitea
+    server: https://kubernetes.default.svc
+  project: default
+  sources:
+    - chart: gitea
+      helm:
+        values: |
+          strategy:
+            type: Recreate
+          service:
+            ssh:
+              clusterIP: ""
+              externalIPs:
+                - 192.168.2.5
+              port: 2222
+          persistence:
+            storageClass: local-path
+          gatewayAPI:
+            enabled: true
+            core:
+              httpRoute:
+                enabled: true
+                annotations:
+                  argocd.argoproj.io/sync-wave: "2"
+                tls: true
+                hostnames:
+                  - gitea.whyredfire.dev
+                parentRefs:
+                  - kind: Gateway
+                    name: traefik-gateway
+                    namespace: traefik
+                    sectionName: websecure
+          gitea:
+            admin:
+              username: ""
+              password: ""
+            config:
+              database:
+                DB_TYPE: postgres
+                HOST: postgres-rw.postgres.svc.cluster.local:5432
+                NAME: gitea
+                USER: gitea
+              server:
+                SSH_PORT: 2222
+              service:
+                DISABLE_REGISTRATION: true
+            additionalConfigFromEnvs:
+              - name: GITEA__DATABASE__PASSWD
+                valueFrom:
+                  secretKeyRef:
+                    key: password
+                    name: gitea-db
+          postgresql-ha:
+            enabled: false
+          valkey-cluster:
+            enabled: false
+          resources:
+            limits:
+              cpu: 1000m
+              memory: 1Gi
+            requests:
+              cpu: 50m
+              memory: 256Mi
+      repoURL: https://dl.gitea.com/charts/
+      targetRevision: 12.7.0
+    - path: apps/gitea
+      repoURL: https://gitea.whyredfire.dev/whyredfire/gitops.git
+      targetRevision: main
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - ServerSideApply=true

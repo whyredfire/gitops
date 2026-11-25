@@ -29,6 +29,16 @@ spec:
           podSelector:
             matchLabels:
               app.kubernetes.io/name: traefik
+    - ports:
+        - port: 2222
+          protocol: TCP
+      to:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: gitea
+          podSelector:
+            matchLabels:
+              app.kubernetes.io/name: gitea
     - to:
         - ipBlock:
             cidr: 192.168.2.0/24

@@ -40,6 +40,10 @@ spec:
                     name: traefik-gateway
                     namespace: traefik
                     sectionName: websecure
+                rules:
+                  - backendRefs:
+                      - name: anubis
+                        port: 8080
           gitea:
             admin:
               username: ""

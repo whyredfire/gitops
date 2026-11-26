@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: anubis
+  namespace: gitea
+data:
+  botPolicy.yaml: |
+    bots:
+      - import: (data)/apps/gitea-rss-feeds.yaml
+      - import: (data)/meta/default-config.yaml
+      - name: challenge-browsers
+        user_agent_regex: (?i:mozilla|opera)
+        action: CHALLENGE
+        challenge:
+          difficulty: 4
+          algorithm: fast
+    openGraph:
+      enabled: true
+      ttl: 24h

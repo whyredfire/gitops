@@ -47,10 +47,11 @@ spec:
       ports:
         - port: 2222
           protocol: TCP
+    # Web traffic only through Anubis
     - from:
-        - namespaceSelector:
+        - podSelector:
             matchLabels:
-              kubernetes.io/metadata.name: traefik
+              app.kubernetes.io/name: anubis
       ports:
         - port: 3000
           protocol: TCP

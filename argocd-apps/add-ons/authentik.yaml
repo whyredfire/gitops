@@ -52,7 +52,7 @@ spec:
                 cpu: 50m
                 memory: 384Mi
       repoURL: https://charts.goauthentik.io
-      targetRevision: 2026.8.6
+      targetRevision: 2026.8.7
     - path: add-ons/authentik
       repoURL: https://github.com/whyredfire/gitops.git
       targetRevision: main

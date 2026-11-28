@@ -11,11 +11,6 @@ spec:
     roles:
       - ensure: present
         login: true
-        name: authentik
-        passwordSecret:
-          name: authentik-db
-      - ensure: present
-        login: true
         name: gitea
         passwordSecret:
           name: gitea-db
@@ -32,10 +27,9 @@ spec:
         passwordSecret:
           name: redoost-db
   postgresql:
-    # Each app role may only connect to its own database; pgweb to all but authentik.
+    # Each app role may only connect to its own database; pgweb to all.
     pg_hba:
       - host sameuser all all scram-sha-256
-      - host authentik pgweb all reject
       - host all pgweb all scram-sha-256
       - host all all all reject
   resources:

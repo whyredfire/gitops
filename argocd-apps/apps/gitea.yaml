@@ -48,6 +48,14 @@ spec:
             admin:
               username: ""
               password: ""
+            oauth:
+              - name: pocket-id
+                provider: openidConnect
+                existingSecret: gitea-oauth
+                autoDiscoverUrl: https://auth.whyredfire.dev/.well-known/openid-configuration
+                scopes: openid email profile groups
+                groupClaimName: groups
+                adminGroup: admins
             config:
               database:
                 DB_TYPE: postgres
@@ -58,6 +66,9 @@ spec:
                 SSH_PORT: 2222
               service:
                 DISABLE_REGISTRATION: true
+                ENABLE_PASSWORD_SIGNIN_FORM: false
+                ENABLE_BASIC_AUTHENTICATION: false
+                ENABLE_PASSKEY_AUTHENTICATION: false
             additionalConfigFromEnvs:
               - name: GITEA__DATABASE__PASSWD
                 valueFrom:

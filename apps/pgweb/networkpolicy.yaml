@@ -4,7 +4,7 @@ metadata:
   name: pgweb
   namespace: pgweb
 spec:
-  # Only traefik may reach pgweb.
+  # Only traefik may reach pgweb, so oauth2-proxy can't be bypassed.
   egress:
     - ports:
         - port: 53

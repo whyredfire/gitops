@@ -46,6 +46,23 @@ spec:
               value: "27299"
             - name: INIT_USERNAME
               value: admin
+            - name: OAUTH_AUTO_LAUNCH
+              value: oidc
+            - name: OAUTH_AUTO_REGISTER
+              value: "true"
+            - name: OAUTH_OIDC_CLIENT_ID
+              value: wireguard-admin
+            - name: OAUTH_OIDC_CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  key: client_secret
+                  name: wireguard-admin-oidc-credentials
+            - name: OAUTH_OIDC_NAME
+              value: Pocket ID
+            - name: OAUTH_OIDC_SERVER
+              value: https://auth.whyredfire.dev
+            - name: OAUTH_PROVIDERS
+              value: oidc
           image: ghcr.io/wg-easy/wg-easy:15.5.0
           name: wg-easy
           ports:

@@ -1,0 +1,32 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  annotations:
+    argocd.argoproj.io/client-side-apply-migration-manager: argocd-controller
+    argocd.argoproj.io/sync-wave: "2"
+  name: pocket-id
+  namespace: argocd
+spec:
+  destination:
+    namespace: pocket-id
+    server: https://kubernetes.default.svc
+  project: default
+  sources:
+    - chart: pocket-id-operator
+      helm:
+        values: |
+          instance:
+            enabled: false
+      repoURL: ghcr.io/aclerici38/charts
+      targetRevision: 0.16.3
+    - path: add-ons/pocket-id
+      repoURL: https://github.com/whyredfire/gitops.git
+      targetRevision: main
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - ServerSideApply=true
+      - SkipDryRunOnMissingResource=true

@@ -1,0 +1,16 @@
+apiVersion: pocketid.internal/v1alpha1
+kind: PocketIDOIDCClient
+metadata:
+  annotations:
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+  name: wireguard-admin
+  namespace: wireguard
+spec:
+  clientID: wireguard-admin
+  callbackUrls:
+    - https://wg-admin.whyredfire.dev/api/auth/oidc/callback
+    - https://wg-admin.whyredfire.dev/api/auth/oidc/link
+  allowedUserGroups:
+    - name: admins
+      namespace: pocket-id
+  launchUrl: https://wg-admin.whyredfire.dev

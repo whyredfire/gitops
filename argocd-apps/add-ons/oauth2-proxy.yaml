@@ -1,0 +1,75 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  annotations:
+    argocd.argoproj.io/client-side-apply-migration-manager: argocd-controller
+    argocd.argoproj.io/sync-wave: "3"
+  name: oauth2-proxy
+  namespace: argocd
+spec:
+  destination:
+    namespace: oauth2-proxy
+    server: https://kubernetes.default.svc
+  project: default
+  sources:
+    - chart: oauth2-proxy
+      helm:
+        values: |
+          config:
+            upstreams:
+              - static://202
+          proxyVarsAsSecrets: false
+          extraArgs:
+            allowed-group: admins
+            code-challenge-method: S256
+            cookie-domain: .whyredfire.dev
+            oidc-issuer-url: https://auth.whyredfire.dev
+            provider: oidc
+            reverse-proxy: true
+            scope: openid email profile groups
+            silence-ping-logging: true
+            skip-provider-button: true
+            whitelist-domain: .whyredfire.dev
+          extraEnv:
+            - name: OAUTH2_PROXY_CLIENT_ID
+              valueFrom:
+                secretKeyRef:
+                  key: client_id
+                  name: oauth2-proxy-oidc-credentials
+            - name: OAUTH2_PROXY_CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  key: client_secret
+                  name: oauth2-proxy-oidc-credentials
+            - name: OAUTH2_PROXY_COOKIE_SECRET
+              valueFrom:
+                secretKeyRef:
+                  key: cookie-secret
+                  name: oauth2-proxy
+          metrics:
+            enabled: false
+          podDisruptionBudget:
+            enabled: false
+          resources:
+            limits:
+              cpu: 500m
+              memory: 128Mi
+            requests:
+              cpu: 10m
+              memory: 32Mi
+          service:
+            portNumber: 4180
+          serviceAccount:
+            automountServiceAccountToken: false
+      repoURL: https://oauth2-proxy.github.io/manifests
+      targetRevision: 10.7.4
+    - path: add-ons/oauth2-proxy
+      repoURL: https://github.com/whyredfire/gitops.git
+      targetRevision: main
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - ServerSideApply=true

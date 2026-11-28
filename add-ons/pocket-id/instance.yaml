@@ -1,0 +1,40 @@
+apiVersion: pocketid.internal/v1alpha1
+kind: PocketIDInstance
+metadata:
+  name: pocket-id
+  namespace: pocket-id
+spec:
+  image: ghcr.io/pocket-id/pocket-id:v2.19.3
+  appUrl: https://auth.whyredfire.dev
+  encryptionKey:
+    valueFrom:
+      secretKeyRef:
+        key: encryptionKey
+        name: pocket-id
+  databaseUrl:
+    valueFrom:
+      secretKeyRef:
+        key: databaseUrl
+        name: pocket-id
+  fileBackend: database
+  route:
+    enabled: true
+    annotations:
+      argocd.argoproj.io/sync-wave: "2"
+    parentRefs:
+      - kind: Gateway
+        name: traefik-gateway
+        namespace: traefik
+        sectionName: websecure
+  resources:
+    limits:
+      cpu: 500m
+      memory: 256Mi
+    requests:
+      cpu: 10m
+      memory: 64Mi
+  userManagement:
+    allowUserSignups: disabled
+    emailsVerified: true
+  analyticsDisabled: true
+  versionCheckDisabled: true

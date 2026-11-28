@@ -23,13 +23,19 @@ spec:
           name: pgweb-db
       - ensure: present
         login: true
+        name: pocketid
+        passwordSecret:
+          name: pocketid-db
+      - ensure: present
+        login: true
         name: redoost
         passwordSecret:
           name: redoost-db
   postgresql:
-    # Each app role may only connect to its own database; pgweb to all.
+    # Each app role may only connect to its own database; pgweb to all but pocketid.
     pg_hba:
       - host sameuser all all scram-sha-256
+      - host pocketid pgweb all reject
       - host all pgweb all scram-sha-256
       - host all all all reject
   resources:

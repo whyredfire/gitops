@@ -6,6 +6,8 @@ resources:
   - argocd-image-updater.yaml
   - cert-manager.yaml
   - cnpg.yaml
+  - oauth2-proxy.yaml
+  - pocket-id.yaml
   - postgres.yaml
   - sealed-secrets.yaml
   - traefik.yaml

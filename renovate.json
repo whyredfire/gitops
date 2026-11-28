@@ -45,6 +45,18 @@
     {
       "matchPackageNames": ["lscr.io/linuxserver/jackett"],
       "versioning": "regex:^v(?<major>\\d+)\\.(?<minor>\\d+)\\.(?<patch>\\d+)-ls(?<build>\\d+)$"
+    },
+    {
+      "description": "The operator and Pocket ID move to v3 together, so review them by hand",
+      "matchPackageNames": ["ghcr.io/aclerici38/charts/pocket-id-operator", "ghcr.io/pocket-id/pocket-id"],
+      "groupName": "pocket-id",
+      "groupSlug": "pocket-id",
+      "automerge": false
+    },
+    {
+      "description": "The operator crash-loops on Pocket ID v3 until it supports it",
+      "matchPackageNames": ["ghcr.io/pocket-id/pocket-id"],
+      "allowedVersions": "<3.0.0"
     }
   ]
 }

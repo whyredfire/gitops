@@ -1,0 +1,23 @@
+apiVersion: pocketid.internal/v1alpha1
+kind: PocketIDUser
+metadata:
+  name: whyredfire
+  namespace: pocket-id
+spec:
+  admin: true
+  email:
+    value: whyredfire@gmail.com
+  firstName:
+    value: Karan
+  lastName:
+    value: Parashar
+---
+apiVersion: pocketid.internal/v1alpha1
+kind: PocketIDUserGroup
+metadata:
+  name: admins
+  namespace: pocket-id
+spec:
+  users:
+    userRefs:
+      - name: whyredfire

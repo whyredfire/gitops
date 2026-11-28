@@ -54,6 +54,12 @@ spec:
               app.kubernetes.io/name: pgweb
         - namespaceSelector:
             matchLabels:
+              kubernetes.io/metadata.name: pocket-id
+          podSelector:
+            matchLabels:
+              app.kubernetes.io/name: pocket-id
+        - namespaceSelector:
+            matchLabels:
               kubernetes.io/metadata.name: redoost
       ports:
         - port: 5432

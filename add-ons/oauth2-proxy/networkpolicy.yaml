@@ -17,17 +17,17 @@ spec:
           podSelector:
             matchLabels:
               k8s-app: kube-dns
-    # auth.whyredfire.dev resolves to Traefik
+    # auth.whyredfire.dev resolves to Cloudflare
     - ports:
-        - port: 8443
+        - port: 443
           protocol: TCP
       to:
-        - namespaceSelector:
-            matchLabels:
-              kubernetes.io/metadata.name: traefik
-          podSelector:
-            matchLabels:
-              app.kubernetes.io/name: traefik
+        - ipBlock:
+            cidr: 0.0.0.0/0
+            except:
+              - 10.0.0.0/8
+              - 172.16.0.0/12
+              - 192.168.0.0/16
   ingress:
     - from:
         - namespaceSelector:
